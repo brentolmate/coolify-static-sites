@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living Knowledge Graph - Obsidian Vault Visualizer</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000011;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    #graph-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+    
+    #controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 17, 0.8);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      color: #fff;
+      backdrop-filter: blur(10px);
+      min-width: 200px;
+    }
+    
+    #controls h3 {
+      margin: 0 0 15px 0;
+      color: #FFD700;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #aaa;
+    }
+    
+    .control-group select,
+    .control-group input[type="range"] {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: #fff;
+      padding: 5px;
+      border-radius: 4px;
+    }
+    
+    #band-legend {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 17, 0.8);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      color: #fff;
+      backdrop-filter: blur(10px);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    #band-legend h3 {
+      margin: 0 0 15px 0;
+      color: #FFD700;
+      font-size: 16px;
+    }
+    
+    .band-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    
+    .band-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    #stats {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 17, 0.8);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      color: #fff;
+      backdrop-filter: blur(10px);
+      font-size: 12px;
+    }
+    
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #FFD700;
+      font-size: 24px;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(255, 215, 0, 0.1);
+      border-top: 3px solid #FFD700;
+      border-radius: 50%;
+      animation: spin 1.618s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .node-tooltip {
+      position: absolute;
+      background: rgba(0, 0, 17, 0.95);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      border-radius: 8px;
+      padding: 15px;
+      color: #fff;
+      pointer-events: none;
+      backdrop-filter: blur(10px);
+      max-width: 300px;
+      font-size: 14px;
+    }
+    
+    .node-tooltip h3 {
+      margin: 0 0 10px 0;
+      color: #FFD700;
+      font-size: 16px;
+    }
+    
+    .node-tooltip p {
+      margin: 5px 0;
+      color: #ddd;
+    }
+    
+    .node-tooltip .path {
+      font-size: 11px;
+      color: #999;
+      font-family: monospace;
+    }
+    
+    .sacred-button {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      border: none;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .sacred-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="graph-container">
+    <div id="loading">
+      <div class="loading-spinner"></div>
+      <div>Initializing Sacred Geometry...</div>
+    </div>
+  </div>
+  
+  <div id="controls" style="display: none;">
+    <h3>Sacred Patterns</h3>
+    
+    <div class="control-group">
+      <label>Geometry Pattern</label>
+      <select id="pattern-select">
+        <option value="metatron">Metatron's Cube</option>
+        <option value="flower">Flower of Life</option>
+        <option value="tree">Tree of Life</option>
+        <option value="spiral">Golden Spiral</option>
+        <option value="sri">Sri Yantra</option>
+      </select>
+    </div>
+    
+    <div class="control-group">
+      <label>Force Strength</label>
+      <input type="range" id="force-strength" min="0" max="100" value="50">
+    </div>
+    
+    <div class="control-group">
+      <label>Node Size</label>
+      <input type="range" id="node-size" min="1" max="50" value="10">
+    </div>
+    
+    <button class="sacred-button" id="export-btn">Export Image</button>
+    <button class="sacred-button" id="reset-btn">Reset View</button>
+  </div>
+  
+  <div id="band-legend" style="display: none;">
+    <h3>Consciousness Bands</h3>
+    <div id="band-list"></div>
+  </div>
+  
+  <div id="stats" style="display: none;">
+    <div>Nodes: <span id="node-count">0</span></div>
+    <div>Links: <span id="link-count">0</span></div>
+    <div>FPS: <span id="fps">0</span></div>
+  </div>
+  
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

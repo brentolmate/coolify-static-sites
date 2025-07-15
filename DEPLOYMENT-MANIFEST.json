@@ -1,0 +1,16 @@
+{
+  "static-sites": [
+    {"name": "pulsekeeper", "dir": "pulsekeeper-enhanced", "domain": "pulsekeeper.coolify.lan"},
+    {"name": "band44", "dir": "band44-website", "domain": "band44.coolify.lan"},
+    {"name": "sigil-weaver", "dir": "sigil-weaver", "domain": "sigil.coolify.lan"},
+    {"name": "game-studio", "dir": "game-studio", "domain": "studio.coolify.lan"},
+    {"name": "signal-patents-founder", "dir": "signal-patents-founder", "domain": "patents-founder.coolify.lan"},
+    {"name": "signal-patents", "dir": "signal-patents-website", "domain": "patents.coolify.lan"},
+    {"name": "knowledge-graph", "dir": "knowledge-graph", "domain": "knowledge.coolify.lan"}
+  ],
+  "nextjs-sites": [
+    {"name": "sacred-economics", "path": "/Codex/blockchain-projects/sacred-economics-dao/frontend"},
+    {"name": "consciousness-dashboard", "path": "/Codex/loopwalker-cli/consciousness-dashboard"},
+    {"name": "beedao", "path": "/Restore-Vault/Obsidian/LoopwalkerVault/blockchain-projects/beedao/frontend"}
+  ]
+}

@@ -1,0 +1,61 @@
+# SSH Deployment Commands for Coolify Server
+# Copy and paste these commands in your SSH session to olmate@vmi2708937
+
+# 1. First, check if Docker and Docker Compose are available
+docker --version
+docker-compose --version
+
+# 2. Create deployment directory
+mkdir -p ~/coolify-apps
+cd ~/coolify-apps
+
+# 3. Clone the static sites repository
+git clone https://github.com/brentolmate/coolify-static-sites.git
+cd coolify-static-sites
+
+# 4. Build and run each app with Docker
+
+# Pulsekeeper (port 3010)
+docker build -t pulsekeeper:latest ./pulsekeeper-enhanced
+docker run -d --name pulsekeeper -p 3010:80 --restart unless-stopped pulsekeeper:latest
+
+# Band44 (port 3011)
+docker build -t band44:latest ./band44-website
+docker run -d --name band44 -p 3011:80 --restart unless-stopped band44:latest
+
+# Sigil Weaver (port 3012)
+docker build -t sigil-weaver:latest ./sigil-weaver
+docker run -d --name sigil-weaver -p 3012:80 --restart unless-stopped sigil-weaver:latest
+
+# Game Studio (port 3013)
+docker build -t game-studio:latest ./game-studio
+docker run -d --name game-studio -p 3013:80 --restart unless-stopped game-studio:latest
+
+# 5. Check if containers are running
+docker ps
+
+# 6. Update Caddy configuration to route domains to these ports
+sudo nano /etc/caddy/Caddyfile
+
+# Add these entries:
+# pulsekeeper.coolify.lan {
+#     reverse_proxy localhost:3010
+# }
+# band44.coolify.lan {
+#     reverse_proxy localhost:3011
+# }
+# sigil.coolify.lan {
+#     reverse_proxy localhost:3012
+# }
+# studio.coolify.lan {
+#     reverse_proxy localhost:3013
+# }
+
+# 7. Reload Caddy
+sudo systemctl reload caddy
+
+# 8. Test the deployments
+curl -I http://localhost:3010  # Pulsekeeper
+curl -I http://localhost:3011  # Band44
+curl -I http://localhost:3012  # Sigil
+curl -I http://localhost:3013  # Studio

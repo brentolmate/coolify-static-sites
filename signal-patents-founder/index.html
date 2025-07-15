@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Patents - Patent Advisory by R&D Veterans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Enterprise color palette */
+            --primary: #0A1628;      /* Deep navy - authority */
+            --accent: #D4AF37;       /* Champagne gold - premium */
+            --trust: #1E3A5F;        /* Corporate blue - stability */
+            --success: #2ECC71;      /* Growth green - ROI */
+            --stanford: #8C1515;     /* Stanford cardinal - credibility */
+            --mit: #A31F34;          /* MIT crimson - expertise */
+            --text-primary: #1A1A1A; /* Near black - readability */
+            --text-secondary: #4A5568; /* Sophisticated gray */
+            --bg-light: #F8FAFC;     /* Off-white - premium feel */
+            --bg-white: #FFFFFF;
+            --border: #E2E8F0;       /* Subtle borders */
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+        }
+
+        /* Premium typography */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Trust Bar */
+        .trust-bar {
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .trust-bar strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--bg-white);
+            box-shadow: 0 1px 3px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '';
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--trust);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--bg-white);
+            padding: 4rem 2rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg opacity="0.03"%3E%3Cpath d="M10 10h30v30H10zM60 10h30v30H60zM10 60h30v30H10zM60 60h30v30H60z" fill="%230A1628"/%3E%3C/g%3E%3C/svg%3E');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--trust);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-subheadline {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-subheadline strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(10, 22, 40, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .founder-credentials {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            opacity: 0.7;
+            filter: grayscale(100%);
+            margin-top: 2rem;
+        }
+
+        .founder-credentials img {
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .founder-credentials span {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Founders Section */
+        .founders {
+            background: var(--bg-white);
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .founders-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .founders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .founder-card {
+            display: flex;
+            align-items: start;
+            gap: 2rem;
+        }
+
+        .founder-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            background: var(--bg-light);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .founder-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .founder-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .founder-title {
+            color: var(--trust);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .founder-credentials-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .founder-credentials-list li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .founder-credentials-list li::before {
+            content: "→";
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .founder-quote {
+            font-style: italic;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--accent);
+            padding-left: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Our Approach Section */
+        .approach {
+            background: var(--bg-light);
+            padding: 4rem 2rem;
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .approach-card {
+            background: var(--bg-white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .approach-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: var(--primary);
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .approach-card h3 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .approach-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 4rem 2rem;
+            background: var(--bg-white);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+
+        .service-features li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--trust) 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-method {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .contact-method h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-method p {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .contact-method a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-brand p {
+            opacity: 0.8;
+            margin-top: 1rem;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .founders-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .founder-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .founder-photo {
+                margin: 0 auto;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <p>Founded by inventors of <strong>47 patents</strong> • <strong>20 years</strong> Fortune 500 R&D • <strong>MIT + Stanford</strong> PhDs</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Signal Patents</div>
+            <ul class="nav-links">
+                <li><a href="#approach">Our Approach</a></li>
+                <li><a href="#founders">Founders</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact" class="nav-cta">Schedule Discussion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-eyebrow">R&D VETERANS TURNED IP ADVISORS</p>
+            
+            <h1>The Patent Firm Built by People Who Actually Built the Patents</h1>
+            
+            <p class="hero-subheadline">
+                After 20 years inside Fortune 500 R&D labs, we know which patents drive real value and which are expensive wallpaper. 
+                Now we're applying that <strong>insider knowledge</strong> to help ambitious companies build dominant IP positions.
+            </p>
+            
+            <div class="cta-group">
+                <button class="btn-primary" onclick="scrollToContact()">Schedule Confidential Discussion</button>
+                <button class="btn-secondary" onclick="scrollToFounders()">Meet the Founders</button>
+            </div>
+            
+            <div class="founder-credentials">
+                <span>Our founders' background:</span>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'%3E%3Ctext x='50' y='20' text-anchor='middle' font-family='Arial' font-size='14' fill='%23333'%3EApple%3C/text%3E%3C/svg%3E" alt="Apple">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'%3E%3Ctext x='50' y='20' text-anchor='middle' font-family='Arial' font-size='14' fill='%23333'%3ESamsung%3C/text%3E%3C/svg%3E" alt="Samsung">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'%3E%3Ctext x='50' y='20' text-anchor='middle' font-family='Arial' font-size='14' fill='%23333'%3EIBM%3C/text%3E%3C/svg%3E" alt="IBM">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Ctext x='30' y='20' text-anchor='middle' font-family='Arial' font-size='14' fill='%23A31F34'%3EMIT%3C/text%3E%3C/svg%3E" alt="MIT">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'%3E%3Ctext x='50' y='20' text-anchor='middle' font-family='Arial' font-size='14' fill='%238C1515'%3EStanford%3C/text%3E%3C/svg%3E" alt="Stanford">
+            </div>
+        </div>
+    </section>
+
+    <!-- Founders Section -->
+    <section class="founders" id="founders">
+        <div class="founders-container">
+            <div class="section-header">
+                <h2>Why Leading CTOs Trust Our Expertise</h2>
+                <p>Two decades building breakthrough IP inside the world's most innovative companies</p>
+            </div>
+            
+            <div class="founders-grid">
+                <div class="founder-card">
+                    <div class="founder-photo">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23E2E8F0'/%3E%3Ctext x='75' y='75' text-anchor='middle' font-family='Arial' font-size='14' fill='%234A5568'%3EPhoto%3C/text%3E%3C/svg%3E" alt="Dr. Sarah Chen">
+                    </div>
+                    <div class="founder-info">
+                        <h3>Dr. Sarah Chen</h3>
+                        <p class="founder-title">Co-Founder & Chief Patent Strategist</p>
+                        <ul class="founder-credentials-list">
+                            <li>15 years Apple AI Research Lab</li>
+                            <li>23 patents in machine learning</li>
+                            <li>MIT PhD, Computer Science</li>
+                            <li>Published in Nature & Science</li>
+                        </ul>
+                        <p class="founder-quote">
+                            "I've seen millions wasted on patents that never create value. We help you avoid those mistakes."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="founder-card">
+                    <div class="founder-photo">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' fill='%23E2E8F0'/%3E%3Ctext x='75' y='75' text-anchor='middle' font-family='Arial' font-size='14' fill='%234A5568'%3EPhoto%3C/text%3E%3C/svg%3E" alt="Michael Torres">
+                    </div>
+                    <div class="founder-info">
+                        <h3>Michael Torres</h3>
+                        <p class="founder-title">Co-Founder & Technical Due Diligence Lead</p>
+                        <ul class="founder-credentials-list">
+                            <li>Former Director, Samsung AI Division</li>
+                            <li>24 patents in semiconductor design</li>
+                            <li>Stanford PhD, Electrical Engineering</li>
+                            <li>3 breakthrough technologies commercialized</li>
+                        </ul>
+                        <p class="founder-quote">
+                            "We don't just read patents—we understand the engineering behind them."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Approach Section -->
+    <section class="approach" id="approach">
+        <div class="section-header">
+            <h2>A Different Approach to Patent Advisory</h2>
+            <p>We limit ourselves to 12 partnerships per year to ensure exceptional results</p>
+        </div>
+        
+        <div class="approach-grid">
+            <div class="approach-card">
+                <span class="approach-number">1</span>
+                <h3>Technical Deep Dive</h3>
+                <p>Our founders personally review every patent claim, drawing on decades of R&D experience to identify true breakthrough innovations.</p>
+            </div>
+            
+            <div class="approach-card">
+                <span class="approach-number">2</span>
+                <h3>Strategic Positioning</h3>
+                <p>We map patent portfolios to your product roadmap, ensuring every acquisition strengthens your competitive moat.</p>
+            </div>
+            
+            <div class="approach-card">
+                <span class="approach-number">3</span>
+                <h3>Insider Network</h3>
+                <p>Our relationships with current R&D leaders give you access to portfolios before they hit the open market.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>How We Create Value</h2>
+            <p>Boutique services designed for companies serious about IP leadership</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Patent Portfolio Acquisition</h3>
+                <p>Strategic identification and acquisition of patents that align with your technology roadmap.</p>
+                <ul class="service-features">
+                    <li>Technical validation by actual inventors</li>
+                    <li>Competitive landscape analysis</li>
+                    <li>ROI modeling based on real R&D experience</li>
+                    <li>Negotiation support</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <h3>IP Due Diligence</h3>
+                <p>Deep technical assessment of patent portfolios for M&A, investment, or licensing decisions.</p>
+                <ul class="service-features">
+                    <li>Claim-by-claim technical analysis</li>
+                    <li>Commercialization potential assessment</li>
+                    <li>Risk identification</li>
+                    <li>Valuation support</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <h3>R&D Partnership Advisory</h3>
+                <p>Structure IP agreements that protect your innovations while enabling strategic collaborations.</p>
+                <ul class="service-features">
+                    <li>Joint development frameworks</li>
+                    <li>IP ownership structures</li>
+                    <li>Technology transfer guidance</li>
+                    <li>Partner vetting</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <h2>Start a Confidential Discussion</h2>
+            <p class="contact-subtitle">We work with just 12 clients per year. Let's explore if we're the right fit.</p>
+            
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <h3>Direct Line</h3>
+                    <p>Speak directly with our founders</p>
+                    <a href="tel:+14155550100">+1 (415) 555-0100</a>
+                </div>
+                
+                <div class="contact-method">
+                    <h3>Email</h3>
+                    <p>For confidential inquiries</p>
+                    <a href="mailto:partners@signalpatents.com">partners@signalpatents.com</a>
+                </div>
+                
+                <div class="contact-method">
+                    <h3>Schedule Meeting</h3>
+                    <p>Book a 30-minute intro call</p>
+                    <a href="#" onclick="openCalendar()">View Calendar</a>
+                </div>
+            </div>
+            
+            <p style="margin-top: 2rem; opacity: 0.8; font-size: 0.875rem;">
+                All discussions begin under mutual NDA. We understand the sensitivity of IP strategy.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo" style="color: white;">Signal Patents</div>
+                <p>Patent advisory from founders who spent 20 years building the innovations you're trying to acquire.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Company</h4>
+                <a href="/about">About Us</a>
+                <a href="/approach">Our Approach</a>
+                <a href="/insights">R&D Insights</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <a href="/patent-guide">Patent Evaluation Guide</a>
+                <a href="/case-studies">Case Studies</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 Signal Patents LLC. Patent advisory by R&D veterans.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll to contact
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Scroll to founders
+        function scrollToFounders() {
+            document.getElementById('founders').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Open calendar (placeholder)
+        function openCalendar() {
+            alert('Calendar integration coming soon. Please call us directly at +1 (415) 555-0100 to schedule a meeting.');
+        }
+
+        // Add subtle animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.querySelectorAll('.approach-card, .service-card, .founder-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
