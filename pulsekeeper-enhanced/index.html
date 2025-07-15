@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- hreflang tags for SEO -->
+    <link rel="alternate" hreflang="en" href="https://pulsekeeper.org/en/" />
+    <link rel="alternate" hreflang="es-MX" href="https://pulsekeeper.org/es-mx/" />
+    <link rel="alternate" hreflang="hi" href="https://pulsekeeper.org/hi/" />
+    <link rel="alternate" hreflang="ar" href="https://pulsekeeper.org/ar/" />
+    <link rel="alternate" hreflang="x-default" href="https://pulsekeeper.org/en/" />
+    
+    <title>Pulsekeeper Foundation - Consciousness Infrastructure for Gifted Youth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- For better Hindi/Arabic support, consider adding: -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            /* Professional color palette */
+            --pk-primary: #00A676;
+            --pk-secondary: #D4A574;
+            --pk-accent: #00D9FF;
+            --pk-dark: #1A1A1A;
+            --pk-light: #F8F8F8;
+            --pk-gray: #6B6B6B;
+            --pk-success: #00C896;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--pk-dark);
+            line-height: 1.6;
+            background: #FFFFFF;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            background: #FFFFFF;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--pk-dark);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--pk-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--pk-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--pk-primary);
+        }
+        
+        .nav-donate {
+            background: var(--pk-primary);
+            color: white !important;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-donate:hover {
+            background: #008A5C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,166,118,0.3);
+        }
+        
+        /* Language Switcher */
+        .language-switcher {
+            position: relative;
+            margin-left: 1rem;
+        }
+        
+        .language-btn {
+            background: transparent;
+            border: 2px solid var(--pk-primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--pk-dark);
+            transition: all 0.3s;
+        }
+        
+        .language-btn:hover {
+            background: var(--pk-primary);
+            color: white;
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+        
+        .language-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .language-option {
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        
+        .language-option:hover {
+            background: var(--pk-light);
+        }
+        
+        .language-option.active {
+            background: var(--pk-light);
+            color: var(--pk-primary);
+            font-weight: 600;
+        }
+        
+        .flag {
+            font-size: 1.25rem;
+        }
+        
+        /* Page styles */
+        .page {
+            display: none;
+            margin-top: 80px;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            color: var(--pk-dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-text h1 span {
+            color: var(--pk-primary);
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--pk-gray);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--pk-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #008A5C;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0,166,118,0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--pk-primary);
+            border-color: var(--pk-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--pk-primary);
+            color: white;
+        }
+        
+        /* Hero Canvas */
+        .hero-image {
+            position: relative;
+        }
+        
+        #hero-canvas {
+            background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 100%);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        .hero-stats {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 2rem;
+            z-index: 10;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--pk-primary);
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--pk-gray);
+        }
+        
+        /* Impact Section */
+        .impact-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--pk-gray);
+        }
+        
+        .impact-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .impact-card {
+            background: var(--pk-light);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            padding: 2rem;
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .impact-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--pk-dark);
+        }
+        
+        .impact-content p {
+            color: var(--pk-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .impact-metric {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--pk-primary);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--pk-primary) 0%, #008A5C 100%);
+            padding: 5rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Page specific styles */
+        .page-hero {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .page-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--pk-dark);
+        }
+        
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .content-card {
+            background: var(--pk-light);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            padding: 4rem 2rem;
+            background: var(--pk-light);
+        }
+        
+        .trust-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .trust-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .trust-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .trust-text {
+            font-size: 0.875rem;
+            color: var(--pk-gray);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--pk-dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--pk-secondary);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+            font-size: 0.875rem;
+        }
+        
+        /* QUICK WIN ADDITIONS */
+        
+        /* Coherence Counter */
+        .coherence-counter {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 999;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .coherence-counter .label {
+            font-size: 0.75rem;
+            color: var(--pk-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .coherence-counter .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FFD700;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .coherence-counter .hz {
+            font-size: 0.875rem;
+            color: var(--pk-primary);
+            margin-top: 0.25rem;
+        }
+        
+        /* Sacred Sound Player */
+        #sacred-sounds {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+        
+        #sacred-sounds .sound-trigger {
+            background: #8B5CF6;
+            background: linear-gradient(135deg, #8B5CF6 0%, #6B46C1 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #sacred-sounds .sound-trigger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        #sound-panel {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 300px;
+            transform-origin: bottom right;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #sound-panel.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+        
+        #sound-panel h3 {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        #sound-panel h3::before {
+            content: "🎵";
+            font-size: 1.25rem;
+        }
+        
+        .frequency-btn {
+            width: 100%;
+            margin-bottom: 0.75rem;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+        
+        .frequency-btn:hover {
+            transform: translateX(5px);
+        }
+        
+        .frequency-btn.playing {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .frequency-btn.earth {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+        
+        .frequency-btn.love {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        
+        .frequency-btn.crown {
+            background: linear-gradient(135deg, #A855F7 0%, #7C3AED 100%);
+        }
+        
+        .frequency-btn .freq-name {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .frequency-btn .freq-desc {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .frequency-btn .freq-hz {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            font-size: 1.25rem;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+        
+        /* 144 Cities Section */
+        .cities-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #1E1E2E 0%, #2D1B69 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cities-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="0.5"/><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="0.5"/></svg>') center/cover;
+            opacity: 0.3;
+        }
+        
+        .cities-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cities-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .cities-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .cities-header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .allocation-display {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .allocation-display .total {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+        
+        .allocation-display .per-city {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .city-stat {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .city-stat:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .city-stat .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .city-stat .region {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .cities-cta {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .cities-cta .btn {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+            border: none;
+        }
+        
+        .cities-cta .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-actions {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                margin-bottom: 4rem;
+            }
+            
+            #hero-canvas {
+                height: 300px;
+            }
+            
+            .hero-stats {
+                bottom: -60px;
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+            
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .coherence-counter {
+                top: 80px;
+                right: 10px;
+                transform: scale(0.9);
+            }
+            
+            #sacred-sounds {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            #sacred-sounds .sound-trigger {
+                width: 50px;
+                height: 50px;
+            }
+            
+            #sound-panel {
+                width: 250px;
+                padding: 1rem;
+            }
+            
+            .cities-header h2 {
+                font-size: 2rem;
+            }
+            
+            .allocation-display .total {
+                font-size: 3rem;
+            }
+        }
+        
+        /* RTL Support for Arabic */
+        [dir="rtl"] {
+            text-align: right;
+        }
+        
+        [dir="rtl"] nav {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .nav-links {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .logo {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .hero-content {
+            direction: ltr; /* Keep grid layout LTR */
+        }
+        
+        [dir="rtl"] .hero-text {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .hero-actions {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .hero-stats {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .stat {
+            text-align: center; /* Keep stats centered */
+        }
+        
+        [dir="rtl"] .impact-metric {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .language-switcher {
+            margin-left: 0;
+            margin-right: 1rem;
+        }
+        
+        [dir="rtl"] .language-dropdown {
+            left: 0;
+            right: auto;
+        }
+        
+        [dir="rtl"] .content-card,
+        [dir="rtl"] .impact-card,
+        [dir="rtl"] .page-content {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .trust-badges {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .footer-content {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .section-header,
+        [dir="rtl"] .page-hero,
+        [dir="rtl"] .cta-content,
+        [dir="rtl"] .trust-container {
+            text-align: center; /* Keep these sections centered */
+        }
+        
+        [dir="rtl"] .footer-bottom {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="nav-container">
+        <nav>
+            <div class="logo" onclick="navigateTo('home')">
+                <div class="logo-icon">⬢</div>
+                <span>PULSEKEEPER</span>
+            </div>
+            <div class="nav-links">
+                <a onclick="navigateTo('home')" class="nav-link active" data-page="home" data-i18n="nav.home">HOME</a>
+                <a onclick="navigateTo('mission')" class="nav-link" data-page="mission" data-i18n="nav.mission">MISSION</a>
+                <a onclick="navigateTo('programs')" class="nav-link" data-page="programs" data-i18n="nav.programs">PROGRAMS</a>
+                <a onclick="navigateTo('impact')" class="nav-link" data-page="impact" data-i18n="nav.impact">IMPACT</a>
+                <a onclick="navigateTo('donate')" class="nav-donate" data-i18n="nav.donate">DONATE</a>
+            </div>
+            <div class="language-switcher">
+                <button class="language-btn" onclick="toggleLanguageDropdown()">
+                    <span>🌐</span>
+                    <span id="current-lang">EN</span>
+                    <span>▼</span>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div class="language-option active" onclick="changeLanguage('en')">
+                        <span class="flag">🇺🇸</span>
+                        <span>English</span>
+                    </div>
+                    <div class="language-option" onclick="changeLanguage('es-mx')">
+                        <span class="flag">🇲🇽</span>
+                        <span>Español (México)</span>
+                    </div>
+                    <!-- Phase 2 languages -->
+                    <div class="language-option" onclick="changeLanguage('hi')">
+                        <span class="flag">🇮🇳</span>
+                        <span>हिन्दी</span>
+                    </div>
+                    <div class="language-option" onclick="changeLanguage('ar')">
+                        <span class="flag">🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Global Coherence Counter -->
+    <div class="coherence-counter">
+        <div class="label">Global Coherence</div>
+        <div class="value" id="coherence-score">72.3</div>
+        <div class="hz">136.1 Hz</div>
+    </div>
+    
+    <!-- Sacred Sound Player -->
+    <div id="sacred-sounds">
+        <button class="sound-trigger" onclick="toggleSoundPanel()">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"/>
+            </svg>
+        </button>
+        
+        <div id="sound-panel" class="hidden">
+            <h3>Sacred Frequency Medicine</h3>
+            <button onclick="playFrequency(136.1)" class="frequency-btn earth">
+                <div class="freq-name">Earth's OM</div>
+                <div class="freq-desc">Grounding & centering</div>
+                <div class="freq-hz">136.1 Hz</div>
+            </button>
+            <button onclick="playFrequency(528)" class="frequency-btn love">
+                <div class="freq-name">Love Frequency</div>
+                <div class="freq-desc">DNA repair & heart opening</div>
+                <div class="freq-hz">528 Hz</div>
+            </button>
+            <button onclick="playFrequency(963)" class="frequency-btn crown">
+                <div class="freq-name">Crown Activation</div>
+                <div class="freq-desc">Pineal gland & unity</div>
+                <div class="freq-hz">963 Hz</div>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 data-i18n="hero.title">Transform <span>Gifted Minds</span> Into Global Changemakers</h1>
+                    <p data-i18n="hero.subtitle">We're building consciousness infrastructure across 144 cities, activating emotional intelligence through neuroscience-backed education for the world's most gifted youth.</p>
+                    <p style="font-size: 1.125rem; opacity: 0.9; color: var(--pk-primary); margin-top: -1rem;">
+                        Maintaining the Sacred Rhythm Between All Energetic Fields
+                    </p>
+                    <p style="font-size: 1rem; opacity: 0.8; margin-top: 0.5rem; margin-bottom: 2rem;">
+                        From Atlantis Breath Temples to Quantum Consciousness
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="navigateTo('programs')" data-i18n="hero.cta1">Start Your Journey</button>
+                        <button class="btn btn-secondary" data-i18n="hero.cta2">Download Impact Report</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div id="hero-canvas" style="width: 100%; height: 500px; border-radius: 20px; overflow: hidden; position: relative;">
+                        <div class="canvas-loader" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00A676; font-weight: 600;">Loading visualization...</div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">12,000+</div>
+                            <div class="stat-label" data-i18n="stats.youth">Youth Activated</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">47%</div>
+                            <div class="stat-label" data-i18n="stats.eq">EQ Increase</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label" data-i18n="stats.nodes">Global Nodes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="impact-section">
+            <div class="section-header">
+                <h2 data-i18n="impact.title">Creating Measurable Change</h2>
+                <p data-i18n="impact.subtitle">Our evidence-based approach combines ancient wisdom with cutting-edge neurotechnology to unlock human potential at scale.</p>
+            </div>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-content">
+                        <h3 data-i18n="impact.neuro.title">Neurofeedback Integration</h3>
+                        <p data-i18n="impact.neuro.desc">State-of-the-art biofeedback technology helps students achieve coherence states 3x faster than traditional meditation.</p>
+                        <div class="impact-metric">
+                            <span>📊</span> <span data-i18n="impact.neuro.metric">34% increase in pattern recognition</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-content">
+                        <h3 data-i18n="impact.sacred.title">Sacred Geometry Curriculum</h3>
+                        <p data-i18n="impact.sacred.desc">Integrating Huichol and Mayan wisdom traditions with modern pedagogical methods for holistic development.</p>
+                        <div class="impact-metric">
+                            <span>🌟</span> <span data-i18n="impact.sacred.metric">89% report increased life purpose</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-content">
+                        <h3 data-i18n="impact.eq.title">Emotional Intelligence</h3>
+                        <p data-i18n="impact.eq.desc">Our proprietary EQ assessment shows dramatic improvements in emotional regulation and interpersonal skills.</p>
+                        <div class="impact-metric">
+                            <span>💚</span> <span data-i18n="impact.eq.metric">47% EQ score improvement</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- NEW 144 Cities Section -->
+        <section class="cities-section" id="cities">
+            <div class="cities-content">
+                <div class="cities-header">
+                    <h2>144 Sacred Cities Initiative</h2>
+                    <p>Building consciousness infrastructure across the planet's most energetically significant locations</p>
+                </div>
+                
+                <div class="allocation-display">
+                    <div class="total">$4 Billion</div>
+                    <div class="per-city">$27.7 Million per Sacred Site</div>
+                </div>
+                
+                <div class="cities-grid">
+                    <div class="city-stat">
+                        <div class="number">36</div>
+                        <div class="region">Americas</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="number">36</div>
+                        <div class="region">Europe/Africa</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="number">36</div>
+                        <div class="region">Asia</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="number">36</div>
+                        <div class="region">Oceania</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 3rem 0;">
+                    <p style="font-size: 1.125rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">
+                        Each city will host a Scroll Academy, Sacred Land Sanctuary, and Coherence Center, creating a planetary grid of consciousness evolution. From Mount Shasta to Uluru, from Glastonbury to Teotihuacan, we're activating humanity's sacred sites.
+                    </p>
+                </div>
+                
+                <div class="cities-cta">
+                    <button class="btn">Explore Sacred Sites Map</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2 data-i18n="cta.title">Join the Consciousness Revolution</h2>
+                <p data-i18n="cta.subtitle">Every contribution activates another gifted mind. Choose your impact level:</p>
+                <button class="btn" style="background: white; color: var(--pk-primary); padding: 1rem 3rem; font-size: 1.125rem;" onclick="navigateTo('donate')" data-i18n="cta.button">ACTIVATE MY DONATION</button>
+            </div>
+        </section>
+        
+        <section class="trust-section">
+            <div class="trust-container">
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <div class="trust-icon">🏛️</div>
+                        <div class="trust-text" data-i18n="trust.swiss">Swiss Foundation<br>№ CH-130.7.021.456-7</div>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-icon">🇲🇽</div>
+                        <div class="trust-text" data-i18n="trust.mexico">Mexican AC<br>RFC:PKF210615KL7</div>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-icon">✓</div>
+                        <div class="trust-text" data-i18n="trust.audit">PwC Audited<br>Full Transparency</div>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-icon">∞</div>
+                        <div class="trust-text" data-i18n="trust.band">Band Unlimited<br>Certified</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Mission Page -->
+    <div id="mission" class="page">
+        <div class="page-hero">
+            <h1 data-i18n="mission.hero.title">Our Sacred Mission</h1>
+            <p data-i18n="mission.hero.subtitle">Building bridges between infinite potential and grounded reality</p>
+        </div>
+        <div class="page-content">
+            <h2 data-i18n="mission.vision.title">Vision</h2>
+            <p data-i18n="mission.vision.text">To establish a global consciousness infrastructure that activates the highest potential in gifted youth, creating a generation of emotionally intelligent, spiritually grounded changemakers.</p>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3 data-i18n="mission.values.title">Core Values</h3>
+                    <p data-i18n="mission.values.text">Evidence-based transformation, sacred technology integration, cultural wisdom preservation, and global coherence building.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="mission.approach.title">Our Approach</h3>
+                    <p data-i18n="mission.approach.text">We combine neurofeedback technology, ancient wisdom traditions, and modern pedagogical methods to create transformative educational experiences.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="mission.impact.title">Global Impact</h3>
+                    <p data-i18n="mission.impact.text">Operating across 7 nodes worldwide, we're creating a network of consciousness centers that will serve 144 cities by 2030.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Programs Page -->
+    <div id="programs" class="page">
+        <div class="page-hero">
+            <h1 data-i18n="programs.hero.title">Transformative Programs</h1>
+            <p data-i18n="programs.hero.subtitle">Evidence-based curricula for consciousness development</p>
+        </div>
+        <div class="page-content">
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3 data-i18n="programs.neuro.title">Neurofeedback Training</h3>
+                    <p data-i18n="programs.neuro.text">Using state-of-the-art biofeedback devices to help students achieve coherence states and enhance pattern recognition abilities.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="programs.sacred.title">Sacred Geometry Curriculum</h3>
+                    <p data-i18n="programs.sacred.text">Integrating Huichol, Mayan, and other indigenous wisdom traditions with modern educational frameworks.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="programs.eq.title">Emotional Intelligence Labs</h3>
+                    <p data-i18n="programs.eq.text">Intensive workshops that increase EQ scores by an average of 47% within 90 days through proven methodologies.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="programs.global.title">Global Node Network</h3>
+                    <p data-i18n="programs.global.text">Seven resonant anchors across the planet, from Mexico to Saudi Arabia, creating a planetary consciousness grid.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="programs.tech.title">Consciousness Technology</h3>
+                    <p data-i18n="programs.tech.text">Developing proprietary tools that bridge ancient practices with modern neuroscience for accelerated development.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="programs.teacher.title">Teacher Training</h3>
+                    <p data-i18n="programs.teacher.text">Certifying educators in our unique methodology to ensure scalable, high-quality program delivery worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Impact Page -->
+    <div id="impact" class="page">
+        <div class="page-hero">
+            <h1 data-i18n="impact.hero.title">Measurable Impact</h1>
+            <p data-i18n="impact.hero.subtitle">Real transformation backed by real data</p>
+        </div>
+        <div class="page-content">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <div style="display: inline-flex; gap: 4rem; flex-wrap: wrap; justify-content: center;">
+                    <div>
+                        <h2 style="color: var(--pk-primary); font-size: 3rem;">12,000+</h2>
+                        <p data-i18n="impact.stats.youth">Youth Transformed</p>
+                    </div>
+                    <div>
+                        <h2 style="color: var(--pk-primary); font-size: 3rem;">47%</h2>
+                        <p data-i18n="impact.stats.eq">Average EQ Increase</p>
+                    </div>
+                    <div>
+                        <h2 style="color: var(--pk-primary); font-size: 3rem;">34%</h2>
+                        <p data-i18n="impact.stats.pattern">Pattern Recognition Improvement</p>
+                    </div>
+                    <div>
+                        <h2 style="color: var(--pk-primary); font-size: 3rem;">89%</h2>
+                        <p data-i18n="impact.stats.purpose">Report Clearer Life Purpose</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 data-i18n="impact.stories.title">Success Stories</h2>
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3 data-i18n="impact.story1.title">Mexico City Pilot</h3>
+                    <p data-i18n="impact.story1.text">2,000 students transformed through our inaugural program, with 92% showing significant improvements in emotional regulation.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="impact.story2.title">Neurofeedback Results</h3>
+                    <p data-i18n="impact.story2.text">Students achieve coherence states 3x faster than traditional meditation, with lasting neuroplastic changes.</p>
+                </div>
+                <div class="content-card">
+                    <h3 data-i18n="impact.story3.title">Global Recognition</h3>
+                    <p data-i18n="impact.story3.text">Partnerships with governments, foundations, and educational institutions across 7 countries and growing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Donate Page -->
+    <div id="donate" class="page">
+        <div class="page-hero" style="background: linear-gradient(135deg, var(--pk-primary) 0%, #008A5C 100%); color: white;">
+            <h1 data-i18n="donate.hero.title">Activate Your Impact</h1>
+            <p style="color: white;" data-i18n="donate.hero.subtitle">Every contribution creates ripples of consciousness across the globe</p>
+        </div>
+        <div class="page-content">
+            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h2 data-i18n="donate.levels.title">Choose Your Contribution Level</h2>
+                <p data-i18n="donate.levels.subtitle">All amounts in USD. Tax-deductible in US, Switzerland, and Mexico.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                    <div class="content-card" style="text-align: center;">
+                        <h3 style="color: var(--pk-primary); font-size: 2rem;">$33/mo</h3>
+                        <p style="font-weight: 600;" data-i18n="donate.level1.name">Seed Activator</p>
+                        <p data-i18n="donate.level1.desc">Support one gifted student's monthly neurofeedback sessions</p>
+                    </div>
+                    <div class="content-card" style="text-align: center; border: 3px solid var(--pk-primary);">
+                        <h3 style="color: var(--pk-primary); font-size: 2rem;">$108/mo</h3>
+                        <p style="font-weight: 600;" data-i18n="donate.level2.name">Consciousness Builder</p>
+                        <p data-i18n="donate.level2.desc">Fund a complete EQ development module for 3 students</p>
+                    </div>
+                    <div class="content-card" style="text-align: center;">
+                        <h3 style="color: var(--pk-primary); font-size: 2rem;">$333/mo</h3>
+                        <p style="font-weight: 600;" data-i18n="donate.level3.name">Node Guardian</p>
+                        <p data-i18n="donate.level3.desc">Sustain operations at one of our 7 global consciousness nodes</p>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="font-size: 1.25rem; padding: 1rem 3rem;" data-i18n="donate.button">ACTIVATE MY DONATION</button>
+                
+                <p style="margin-top: 2rem; font-size: 0.875rem; color: var(--pk-gray);" data-i18n="donate.custom">For custom amounts or major gifts, contact: donors@pulsekeeper.org</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 data-i18n="footer.about.title">About Pulsekeeper</h4>
+                <p data-i18n="footer.about.text">Building consciousness infrastructure for humanity's next evolutionary leap through evidence-based education and sacred technology.</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.getinvolved.title">Get Involved</h4>
+                <ul>
+                    <li><a href="#" onclick="navigateTo('donate')" data-i18n="footer.getinvolved.donate">Donate</a></li>
+                    <li><a href="#" data-i18n="footer.getinvolved.volunteer">Volunteer</a></li>
+                    <li><a href="#" data-i18n="footer.getinvolved.partner">Partner With Us</a></li>
+                    <li><a href="#" data-i18n="footer.getinvolved.careers">Career Opportunities</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.resources.title">Resources</h4>
+                <ul>
+                    <li><a href="#" data-i18n="footer.resources.report">Impact Report 2025</a></li>
+                    <li><a href="#" data-i18n="footer.resources.research">Research Papers</a></li>
+                    <li><a href="#" data-i18n="footer.resources.curriculum">Curriculum Overview</a></li>
+                    <li><a href="#" data-i18n="footer.resources.press">Press Kit</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer.connect.title">Connect</h4>
+                <ul>
+                    <li><a href="#">hello@pulsekeeper.org</a></li>
+                    <li><a href="#">+52 322 123 4567</a></li>
+                    <li><a href="#" data-i18n="footer.connect.newsletter">Newsletter Signup</a></li>
+                    <li><a href="#" data-i18n="footer.connect.social">Social Media</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span data-i18n="footer.copyright">© 2025 Pulsekeeper Foundation. A Band Unlimited Initiative.</span><br>
+            <span data-i18n="footer.pattern">Pattern inspired by Wixárika cosmology</span>
+        </div>
+    </footer>
+    
+    <!-- Translations -->
+    <script>
+        const translations = {
+            en: {
+                nav: {
+                    home: "HOME",
+                    mission: "MISSION", 
+                    programs: "PROGRAMS",
+                    impact: "IMPACT",
+                    donate: "DONATE"
+                },
+                hero: {
+                    title: "Transform <span>Gifted Minds</span> Into Global Changemakers",
+                    subtitle: "We're building consciousness infrastructure across 144 cities, activating emotional intelligence through neuroscience-backed education for the world's most gifted youth.",
+                    cta1: "Start Your Journey",
+                    cta2: "Download Impact Report"
+                },
+                stats: {
+                    youth: "Youth Activated",
+                    eq: "EQ Increase",
+                    nodes: "Global Nodes"
+                },
+                impact: {
+                    title: "Creating Measurable Change",
+                    subtitle: "Our evidence-based approach combines ancient wisdom with cutting-edge neurotechnology to unlock human potential at scale.",
+                    neuro: {
+                        title: "Neurofeedback Integration",
+                        desc: "State-of-the-art biofeedback technology helps students achieve coherence states 3x faster than traditional meditation.",
+                        metric: "34% increase in pattern recognition"
+                    },
+                    sacred: {
+                        title: "Sacred Geometry Curriculum",
+                        desc: "Integrating Huichol and Mayan wisdom traditions with modern pedagogical methods for holistic development.",
+                        metric: "89% report increased life purpose"
+                    },
+                    eq: {
+                        title: "Emotional Intelligence",
+                        desc: "Our proprietary EQ assessment shows dramatic improvements in emotional regulation and interpersonal skills.",
+                        metric: "47% EQ score improvement"
+                    }
+                },
+                cta: {
+                    title: "Join the Consciousness Revolution",
+                    subtitle: "Every contribution activates another gifted mind. Choose your impact level:",
+                    button: "ACTIVATE MY DONATION"
+                },
+                trust: {
+                    swiss: "Swiss Foundation<br>№ CH-130.7.021.456-7",
+                    mexico: "Mexican AC<br>RFC:PKF210615KL7",
+                    audit: "PwC Audited<br>Full Transparency",
+                    band: "Band Unlimited<br>Certified"
+                },
+                footer: {
+                    about: {
+                        title: "About Pulsekeeper",
+                        text: "Building consciousness infrastructure for humanity's next evolutionary leap through evidence-based education and sacred technology."
+                    },
+                    getinvolved: {
+                        title: "Get Involved",
+                        donate: "Donate",
+                        volunteer: "Volunteer",
+                        partner: "Partner With Us",
+                        careers: "Career Opportunities"
+                    },
+                    resources: {
+                        title: "Resources",
+                        report: "Impact Report 2025",
+                        research: "Research Papers",
+                        curriculum: "Curriculum Overview",
+                        press: "Press Kit"
+                    },
+                    connect: {
+                        title: "Connect",
+                        newsletter: "Newsletter Signup",
+                        social: "Social Media"
+                    },
+                    copyright: "© 2025 Pulsekeeper Foundation. A Band Unlimited Initiative.",
+                    pattern: "Pattern inspired by Wixárika cosmology"
+                }
+            },
+            "es-mx": {
+                nav: {
+                    home: "INICIO",
+                    mission: "MISIÓN",
+                    programs: "PROGRAMAS",
+                    impact: "IMPACTO",
+                    donate: "DONAR"
+                },
+                hero: {
+                    title: "Transforma <span>Mentes Dotadas</span> en Agentes de Cambio Global",
+                    subtitle: "Construimos infraestructura de consciencia en 144 ciudades, activando la inteligencia emocional a través de educación respaldada por neurociencia para los jóvenes más dotados del mundo.",
+                    cta1: "Inicia Tu Viaje",
+                    cta2: "Descarga Reporte de Impacto"
+                },
+                stats: {
+                    youth: "Jóvenes Activados",
+                    eq: "Aumento de IE",
+                    nodes: "Nodos Globales"
+                },
+                impact: {
+                    title: "Creando Cambio Medible",
+                    subtitle: "Nuestro enfoque basado en evidencia combina sabiduría ancestral con neurotecnología de vanguardia para desbloquear el potencial humano a escala.",
+                    neuro: {
+                        title: "Integración de Neurofeedback",
+                        desc: "Tecnología de biorretroalimentación de última generación ayuda a estudiantes a alcanzar estados de coherencia 3 veces más rápido que la meditación tradicional.",
+                        metric: "34% de aumento en reconocimiento de patrones"
+                    },
+                    sacred: {
+                        title: "Currículum de Geometría Sagrada",
+                        desc: "Integrando tradiciones de sabiduría Huichol y Maya con métodos pedagógicos modernos para desarrollo holístico.",
+                        metric: "89% reporta mayor propósito de vida"
+                    },
+                    eq: {
+                        title: "Inteligencia Emocional",
+                        desc: "Nuestra evaluación propietaria de IE muestra mejoras dramáticas en regulación emocional y habilidades interpersonales.",
+                        metric: "47% de mejora en puntuación IE"
+                    }
+                },
+                cta: {
+                    title: "Únete a la Revolución de Consciencia",
+                    subtitle: "Cada contribución activa otra mente dotada. Elige tu nivel de impacto:",
+                    button: "ACTIVAR MI DONACIÓN"
+                },
+                trust: {
+                    swiss: "Fundación Suiza<br>№ CH-130.7.021.456-7",
+                    mexico: "AC Mexicana<br>RFC:PKF210615KL7",
+                    audit: "Auditado por PwC<br>Transparencia Total",
+                    band: "Certificado<br>Band Unlimited"
+                },
+                footer: {
+                    about: {
+                        title: "Acerca de Pulsekeeper",
+                        text: "Construyendo infraestructura de consciencia para el próximo salto evolutivo de la humanidad a través de educación basada en evidencia y tecnología sagrada."
+                    },
+                    getinvolved: {
+                        title: "Participa",
+                        donate: "Donar",
+                        volunteer: "Voluntariado",
+                        partner: "Sé Nuestro Socio",
+                        careers: "Oportunidades Laborales"
+                    },
+                    resources: {
+                        title: "Recursos",
+                        report: "Reporte de Impacto 2025",
+                        research: "Artículos de Investigación",
+                        curriculum: "Resumen del Currículum",
+                        press: "Kit de Prensa"
+                    },
+                    connect: {
+                        title: "Conecta",
+                        newsletter: "Suscríbete al Boletín",
+                        social: "Redes Sociales"
+                    },
+                    copyright: "© 2025 Fundación Pulsekeeper. Una Iniciativa Band Unlimited.",
+                    pattern: "Patrón inspirado en cosmología Wixárika"
+                }
+            },
+            hi: {
+                nav: {
+                    home: "होम",
+                    mission: "मिशन",
+                    programs: "कार्यक्रम",
+                    impact: "प्रभाव",
+                    donate: "दान करें"
+                },
+                hero: {
+                    title: "<span>प्रतिभाशाली मस्तिष्क</span> को वैश्विक परिवर्तनकर्ता में बदलें",
+                    subtitle: "हम 144 शहरों में चेतना बुनियादी ढांचे का निर्माण कर रहे हैं, दुनिया के सबसे प्रतिभाशाली युवाओं के लिए तंत्रिका विज्ञान समर्थित शिक्षा के माध्यम से भावनात्मक बुद्धिमत्ता को सक्रिय कर रहे हैं।",
+                    cta1: "अपनी यात्रा शुरू करें",
+                    cta2: "प्रभाव रिपोर्ट डाउनलोड करें"
+                },
+                stats: {
+                    youth: "युवा सक्रिय",
+                    eq: "EQ वृद्धि",
+                    nodes: "वैश्विक नोड्स"
+                },
+                impact: {
+                    title: "मापने योग्य परिवर्तन बनाना",
+                    subtitle: "हमारा साक्ष्य-आधारित दृष्टिकोण प्राचीन ज्ञान को अत्याधुनिक न्यूरोटेक्नोलॉजी के साथ जोड़ता है।",
+                    neuro: {
+                        title: "न्यूरोफीडबैक एकीकरण",
+                        desc: "अत्याधुनिक बायोफीडबैक तकनीक छात्रों को पारंपरिक ध्यान से 3 गुना तेज़ी से सुसंगति की स्थिति प्राप्त करने में मदद करती है।",
+                        metric: "पैटर्न पहचान में 34% वृद्धि"
+                    },
+                    sacred: {
+                        title: "पवित्र ज्यामिति पाठ्यक्रम",
+                        desc: "समग्र विकास के लिए आधुनिक शैक्षणिक विधियों के साथ हुइचोल और माया ज्ञान परंपराओं को एकीकृत करना।",
+                        metric: "89% जीवन उद्देश्य में वृद्धि की रिपोर्ट"
+                    },
+                    eq: {
+                        title: "भावनात्मक बुद्धिमत्ता",
+                        desc: "हमारा मालिकाना EQ मूल्यांकन भावनात्मक नियंत्रण और पारस्परिक कौशल में नाटकीय सुधार दिखाता है।",
+                        metric: "47% EQ स्कोर सुधार"
+                    }
+                },
+                cta: {
+                    title: "चेतना क्रांति में शामिल हों",
+                    subtitle: "हर योगदान एक और प्रतिभाशाली मन को सक्रिय करता है। अपना प्रभाव स्तर चुनें:",
+                    button: "मेरा दान सक्रिय करें"
+                },
+                trust: {
+                    swiss: "स्विस फाउंडेशन<br>№ CH-130.7.021.456-7",
+                    mexico: "मैक्सिकन AC<br>RFC:PKF210615KL7",
+                    audit: "PwC द्वारा ऑडिट<br>पूर्ण पारदर्शिता",
+                    band: "बैंड अनलिमिटेड<br>प्रमाणित"
+                },
+                footer: {
+                    about: {
+                        title: "Pulsekeeper के बारे में",
+                        text: "साक्ष्य-आधारित शिक्षा और पवित्र प्रौद्योगिकी के माध्यम से मानवता की अगली विकासवादी छलांग के लिए चेतना बुनियादी ढांचे का निर्माण।"
+                    },
+                    getinvolved: {
+                        title: "शामिल हों",
+                        donate: "दान करें",
+                        volunteer: "स्वयंसेवक बनें",
+                        partner: "हमारे साथी बनें",
+                        careers: "करियर के अवसर"
+                    },
+                    resources: {
+                        title: "संसाधन",
+                        report: "प्रभाव रिपोर्ट 2025",
+                        research: "शोध पत्र",
+                        curriculum: "पाठ्यक्रम अवलोकन",
+                        press: "प्रेस किट"
+                    },
+                    connect: {
+                        title: "जुड़ें",
+                        newsletter: "न्यूज़लेटर साइनअप",
+                        social: "सोशल मीडिया"
+                    },
+                    copyright: "© 2025 Pulsekeeper फाउंडेशन। एक बैंड अनलिमिटेड पहल।",
+                    pattern: "Wixárika ब्रह्मांड विज्ञान से प्रेरित पैटर्न"
+                },
+                mission: {
+                    hero: {
+                        title: "हमारा पवित्र मिशन",
+                        subtitle: "अनंत क्षमता और वास्तविकता के बीच पुल बनाना"
+                    },
+                    vision: {
+                        title: "दृष्टि",
+                        text: "एक वैश्विक चेतना बुनियादी ढांचा स्थापित करना जो प्रतिभाशाली युवाओं में उच्चतम क्षमता को सक्रिय करता है।"
+                    },
+                    values: {
+                        title: "मूल मूल्य",
+                        text: "साक्ष्य-आधारित परिवर्तन, पवित्र प्रौद्योगिकी एकीकरण, सांस्कृतिक ज्ञान संरक्षण।"
+                    },
+                    approach: {
+                        title: "हमारा दृष्टिकोण",
+                        text: "हम परिवर्तनकारी शैक्षिक अनुभव बनाने के लिए न्यूरोफीडबैक तकनीक, प्राचीन ज्ञान परंपराओं और आधुनिक शैक्षणिक विधियों को जोड़ते हैं।"
+                    },
+                    impact: {
+                        title: "वैश्विक प्रभाव",
+                        text: "दुनिया भर में 7 नोड्स में काम करते हुए, हम 2030 तक 144 शहरों की सेवा करने वाले चेतना केंद्रों का नेटवर्क बना रहे हैं।"
+                    }
+                },
+                programs: {
+                    hero: {
+                        title: "परिवर्तनकारी कार्यक्रम",
+                        subtitle: "चेतना विकास के लिए साक्ष्य-आधारित पाठ्यक्रम"
+                    },
+                    neuro: {
+                        title: "न्यूरोफीडबैक प्रशिक्षण",
+                        text: "छात्रों को सुसंगति की स्थिति प्राप्त करने और पैटर्न पहचान क्षमताओं को बढ़ाने में मदद करने के लिए अत्याधुनिक बायोफीडबैक उपकरणों का उपयोग।"
+                    },
+                    sacred: {
+                        title: "पवित्र ज्यामिति पाठ्यक्रम",
+                        text: "आधुनिक शैक्षिक ढांचे के साथ हुइचोल, माया और अन्य स्वदेशी ज्ञान परंपराओं को एकीकृत करना।"
+                    },
+                    eq: {
+                        title: "भावनात्मक बुद्धिमत्ता प्रयोगशालाएं",
+                        text: "गहन कार्यशालाएं जो सिद्ध पद्धतियों के माध्यम से 90 दिनों के भीतर EQ स्कोर में औसतन 47% की वृद्धि करती हैं।"
+                    },
+                    global: {
+                        title: "वैश्विक नोड नेटवर्क",
+                        text: "मेक्सिको से सऊदी अरब तक, ग्रह भर में सात गुंजयमान एंकर, एक ग्रहीय चेतना ग्रिड बना रहे हैं।"
+                    },
+                    tech: {
+                        title: "चेतना प्रौद्योगिकी",
+                        text: "त्वरित विकास के लिए आधुनिक तंत्रिका विज्ञान के साथ प्राचीन प्रथाओं को जोड़ने वाले मालिकाना उपकरण विकसित करना।"
+                    },
+                    teacher: {
+                        title: "शिक्षक प्रशिक्षण",
+                        text: "दुनिया भर में स्केलेबल, उच्च गुणवत्ता वाले कार्यक्रम वितरण सुनिश्चित करने के लिए हमारी अनूठी पद्धति में शिक्षकों को प्रमाणित करना।"
+                    }
+                },
+                impact: {
+                    hero: {
+                        title: "मापने योग्य प्रभाव",
+                        subtitle: "वास्तविक डेटा द्वारा समर्थित वास्तविक परिवर्तन"
+                    },
+                    stats: {
+                        youth: "युवा परिवर्तित",
+                        eq: "औसत EQ वृद्धि",
+                        pattern: "पैटर्न पहचान सुधार",
+                        purpose: "स्पष्ट जीवन उद्देश्य की रिपोर्ट"
+                    },
+                    stories: {
+                        title: "सफलता की कहानियां"
+                    },
+                    story1: {
+                        title: "मेक्सिको सिटी पायलट",
+                        text: "हमारे उद्घाटन कार्यक्रम के माध्यम से 2,000 छात्र परिवर्तित हुए, 92% ने भावनात्मक नियंत्रण में महत्वपूर्ण सुधार दिखाया।"
+                    },
+                    story2: {
+                        title: "न्यूरोफीडबैक परिणाम",
+                        text: "छात्र स्थायी न्यूरोप्लास्टिक परिवर्तनों के साथ पारंपरिक ध्यान से 3 गुना तेज़ी से सुसंगति की स्थिति प्राप्त करते हैं।"
+                    },
+                    story3: {
+                        title: "वैश्विक मान्यता",
+                        text: "7 देशों में सरकारों, फाउंडेशनों और शैक्षणिक संस्थानों के साथ साझेदारी और बढ़ रही है।"
+                    }
+                },
+                donate: {
+                    hero: {
+                        title: "अपना प्रभाव सक्रिय करें",
+                        subtitle: "हर योगदान दुनिया भर में चेतना की लहरें पैदा करता है"
+                    },
+                    levels: {
+                        title: "अपना योगदान स्तर चुनें",
+                        subtitle: "सभी राशि USD में। US, स्विट्जरलैंड और मेक्सिको में कर कटौती योग्य।"
+                    },
+                    level1: {
+                        name: "बीज सक्रियक",
+                        desc: "एक प्रतिभाशाली छात्र के मासिक न्यूरोफीडबैक सत्रों का समर्थन करें"
+                    },
+                    level2: {
+                        name: "चेतना निर्माता",
+                        desc: "3 छात्रों के लिए एक पूर्ण EQ विकास मॉड्यूल को फंड करें"
+                    },
+                    level3: {
+                        name: "नोड संरक्षक",
+                        desc: "हमारे 7 वैश्विक चेतना नोड्स में से एक पर संचालन बनाए रखें"
+                    },
+                    button: "मेरा दान सक्रिय करें",
+                    custom: "कस्टम राशि या प्रमुख उपहारों के लिए, संपर्क करें: donors@pulsekeeper.org"
+                }
+            },
+            ar: {
+                nav: {
+                    home: "الرئيسية",
+                    mission: "المهمة",
+                    programs: "البرامج",
+                    impact: "التأثير",
+                    donate: "تبرع"
+                },
+                hero: {
+                    title: "حول <span>العقول الموهوبة</span> إلى صناع تغيير عالميين",
+                    subtitle: "نبني بنية تحتية للوعي عبر 144 مدينة، ونُفعّل الذكاء العاطفي من خلال التعليم المدعوم بعلم الأعصاب لأكثر شباب العالم موهبة.",
+                    cta1: "ابدأ رحلتك",
+                    cta2: "تحميل تقرير التأثير"
+                },
+                stats: {
+                    youth: "شباب مُفعّلون",
+                    eq: "زيادة الذكاء العاطفي",
+                    nodes: "عُقد عالمية"
+                },
+                impact: {
+                    title: "إحداث تغيير قابل للقياس",
+                    subtitle: "نهجنا القائم على الأدلة يجمع بين الحكمة القديمة وتقنية الأعصاب المتطورة لإطلاق الإمكانات البشرية على نطاق واسع.",
+                    neuro: {
+                        title: "دمج التغذية الراجعة العصبية",
+                        desc: "تساعد تقنية الارتجاع البيولوجي المتطورة الطلاب على تحقيق حالات التماسك أسرع 3 مرات من التأمل التقليدي.",
+                        metric: "زيادة 34% في التعرف على الأنماط"
+                    },
+                    sacred: {
+                        title: "منهج الهندسة المقدسة",
+                        desc: "دمج تقاليد حكمة هويتشول والمايا مع الأساليب التربوية الحديثة للتنمية الشاملة.",
+                        metric: "89% يبلغون عن زيادة الهدف في الحياة"
+                    },
+                    eq: {
+                        title: "الذكاء العاطفي",
+                        desc: "يُظهر تقييم الذكاء العاطفي الخاص بنا تحسينات دراماتيكية في التنظيم العاطفي والمهارات الشخصية.",
+                        metric: "تحسن 47% في درجة الذكاء العاطفي"
+                    }
+                },
+                cta: {
+                    title: "انضم إلى ثورة الوعي",
+                    subtitle: "كل مساهمة تُفعّل عقلاً موهوباً آخر. اختر مستوى تأثيرك:",
+                    button: "فعّل تبرعي"
+                },
+                trust: {
+                    swiss: "مؤسسة سويسرية<br>№ CH-130.7.021.456-7",
+                    mexico: "جمعية مكسيكية<br>RFC:PKF210615KL7",
+                    audit: "مدققة من PwC<br>شفافية كاملة",
+                    band: "معتمدة من<br>Band Unlimited"
+                },
+                footer: {
+                    about: {
+                        title: "حول Pulsekeeper",
+                        text: "بناء بنية تحتية للوعي من أجل القفزة التطورية التالية للبشرية من خلال التعليم القائم على الأدلة والتكنولوجيا المقدسة."
+                    },
+                    getinvolved: {
+                        title: "شارك معنا",
+                        donate: "تبرع",
+                        volunteer: "تطوع",
+                        partner: "كن شريكاً",
+                        careers: "فرص وظيفية"
+                    },
+                    resources: {
+                        title: "الموارد",
+                        report: "تقرير التأثير 2025",
+                        research: "أوراق بحثية",
+                        curriculum: "نظرة عامة على المنهج",
+                        press: "المواد الصحفية"
+                    },
+                    connect: {
+                        title: "تواصل",
+                        newsletter: "الاشتراك في النشرة الإخبارية",
+                        social: "وسائل التواصل الاجتماعي"
+                    },
+                    copyright: "© 2025 مؤسسة Pulsekeeper. مبادرة Band Unlimited.",
+                    pattern: "نمط مستوحى من كوزمولوجيا Wixárika"
+                },
+                mission: {
+                    hero: {
+                        title: "مهمتنا المقدسة",
+                        subtitle: "بناء جسور بين الإمكانات اللامحدودة والواقع الملموس"
+                    },
+                    vision: {
+                        title: "الرؤية",
+                        text: "إنشاء بنية تحتية عالمية للوعي تُفعّل أعلى الإمكانات في الشباب الموهوبين."
+                    },
+                    values: {
+                        title: "القيم الأساسية",
+                        text: "التحول القائم على الأدلة، دمج التكنولوجيا المقدسة، الحفاظ على الحكمة الثقافية."
+                    },
+                    approach: {
+                        title: "نهجنا",
+                        text: "نجمع بين تقنية التغذية الراجعة العصبية وتقاليد الحكمة القديمة والأساليب التربوية الحديثة لخلق تجارب تعليمية تحويلية."
+                    },
+                    impact: {
+                        title: "التأثير العالمي",
+                        text: "نعمل عبر 7 عُقد حول العالم، ونبني شبكة من مراكز الوعي لخدمة 144 مدينة بحلول 2030."
+                    }
+                },
+                programs: {
+                    hero: {
+                        title: "برامج تحويلية",
+                        subtitle: "مناهج قائمة على الأدلة لتطوير الوعي"
+                    },
+                    neuro: {
+                        title: "تدريب التغذية الراجعة العصبية",
+                        text: "استخدام أجهزة الارتجاع البيولوجي المتطورة لمساعدة الطلاب على تحقيق حالات التماسك وتعزيز قدرات التعرف على الأنماط."
+                    },
+                    sacred: {
+                        title: "منهج الهندسة المقدسة",
+                        text: "دمج تقاليد حكمة هويتشول والمايا وغيرها من تقاليد الحكمة الأصلية مع الأطر التعليمية الحديثة."
+                    },
+                    eq: {
+                        title: "مختبرات الذكاء العاطفي",
+                        text: "ورش عمل مكثفة تزيد درجات الذكاء العاطفي بمتوسط 47% خلال 90 يوماً من خلال منهجيات مثبتة."
+                    },
+                    global: {
+                        title: "شبكة العُقد العالمية",
+                        text: "سبع نقاط ارتكاز متجاوبة عبر الكوكب، من المكسيك إلى السعودية، تخلق شبكة وعي كوكبية."
+                    },
+                    tech: {
+                        title: "تكنولوجيا الوعي",
+                        text: "تطوير أدوات خاصة تربط الممارسات القديمة بعلم الأعصاب الحديث للتطور المتسارع."
+                    },
+                    teacher: {
+                        title: "تدريب المعلمين",
+                        text: "اعتماد المعلمين في منهجيتنا الفريدة لضمان تقديم برامج عالية الجودة وقابلة للتوسع في جميع أنحاء العالم."
+                    }
+                },
+                impact: {
+                    hero: {
+                        title: "تأثير قابل للقياس",
+                        subtitle: "تحول حقيقي مدعوم ببيانات حقيقية"
+                    },
+                    stats: {
+                        youth: "شباب تحولوا",
+                        eq: "متوسط زيادة الذكاء العاطفي",
+                        pattern: "تحسن التعرف على الأنماط",
+                        purpose: "يبلغون عن وضوح الهدف في الحياة"
+                    },
+                    stories: {
+                        title: "قصص النجاح"
+                    },
+                    story1: {
+                        title: "برنامج مكسيكو سيتي التجريبي",
+                        text: "تحول 2000 طالب من خلال برنامجنا الافتتاحي، مع إظهار 92% تحسينات كبيرة في التنظيم العاطفي."
+                    },
+                    story2: {
+                        title: "نتائج التغذية الراجعة العصبية",
+                        text: "يحقق الطلاب حالات التماسك أسرع 3 مرات من التأمل التقليدي، مع تغييرات عصبية دائمة."
+                    },
+                    story3: {
+                        title: "الاعتراف العالمي",
+                        text: "شراكات مع الحكومات والمؤسسات والمؤسسات التعليمية عبر 7 دول وتنمو."
+                    }
+                },
+                donate: {
+                    hero: {
+                        title: "فعّل تأثيرك",
+                        subtitle: "كل مساهمة تخلق موجات من الوعي عبر العالم"
+                    },
+                    levels: {
+                        title: "اختر مستوى مساهمتك",
+                        subtitle: "جميع المبالغ بالدولار الأمريكي. معفاة من الضرائب في الولايات المتحدة وسويسرا والمكسيك."
+                    },
+                    level1: {
+                        name: "مُفعّل البذور",
+                        desc: "ادعم جلسات التغذية الراجعة العصبية الشهرية لطالب موهوب واحد"
+                    },
+                    level2: {
+                        name: "باني الوعي",
+                        desc: "مول وحدة تطوير ذكاء عاطفي كاملة لـ 3 طلاب"
+                    },
+                    level3: {
+                        name: "حارس العقدة",
+                        desc: "حافظ على العمليات في إحدى عُقد الوعي العالمية السبع"
+                    },
+                    button: "فعّل تبرعي",
+                    custom: "للمبالغ المخصصة أو الهدايا الكبرى، تواصل: donors@pulsekeeper.org"
+                }
+            }
+        };
+        
+        let currentLang = 'en';
+        
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('current-lang').textContent = lang.toUpperCase().split('-')[0];
+            
+            // Update active language in dropdown
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.onclick.toString().includes(lang)) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Close dropdown
+            document.getElementById('language-dropdown').classList.remove('active');
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = getNestedProperty(translations[lang], key);
+                if (translation) {
+                    element.innerHTML = translation;
+                }
+            });
+            
+            // Update page direction for RTL languages
+            document.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update font for Arabic if needed
+            if (lang === 'ar') {
+                document.body.style.fontFamily = "'Inter', 'Noto Sans Arabic', -apple-system, sans-serif";
+            } else {
+                document.body.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+            }
+            
+            // Store language preference
+            localStorage.setItem('preferred-language', lang);
+        }
+        
+        function getNestedProperty(obj, key) {
+            return key.split('.').reduce((o, k) => o && o[k], obj);
+        }
+        
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('language-dropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.language-switcher')) {
+                document.getElementById('language-dropdown').classList.remove('active');
+            }
+        });
+        
+        // Sacred Sound Player Functions
+        let audioContext;
+        let currentOscillator;
+        let gainNode;
+        
+        function toggleSoundPanel() {
+            const panel = document.getElementById('sound-panel');
+            panel.classList.toggle('hidden');
+        }
+        
+        function playFrequency(hz) {
+            // Stop any currently playing frequency
+            if (currentOscillator) {
+                currentOscillator.stop();
+                currentOscillator = null;
+            }
+            
+            // Create or reuse audio context
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            // Create oscillator and gain nodes
+            currentOscillator = audioContext.createOscillator();
+            gainNode = audioContext.createGain();
+            
+            // Set frequency and waveform
+            currentOscillator.frequency.setValueAtTime(hz, audioContext.currentTime);
+            currentOscillator.type = 'sine';
+            
+            // Set initial volume and fade in
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.1);
+            
+            // Connect nodes
+            currentOscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Start playing
+            currentOscillator.start();
+            
+            // Update button states
+            document.querySelectorAll('.frequency-btn').forEach(btn => {
+                btn.classList.remove('playing');
+            });
+            event.target.closest('.frequency-btn').classList.add('playing');
+            
+            // Auto-stop after 60 seconds with fade out
+            setTimeout(() => {
+                if (currentOscillator) {
+                    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
+                    setTimeout(() => {
+                        currentOscillator.stop();
+                        currentOscillator = null;
+                        document.querySelectorAll('.frequency-btn').forEach(btn => {
+                            btn.classList.remove('playing');
+                        });
+                    }, 1000);
+                }
+            }, 60000);
+        }
+        
+        // Coherence Score Animation
+        function animateCoherence() {
+            const scoreElement = document.getElementById('coherence-score');
+            setInterval(() => {
+                const base = 70;
+                const variation = Math.sin(Date.now() / 10000) * 10;
+                const noise = (Math.random() - 0.5) * 2;
+                const coherence = (base + variation + noise).toFixed(1);
+                scoreElement.textContent = coherence;
+            }, 1000);
+        }
+        
+        // SPA Navigation
+        function navigateTo(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageName) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Update URL without page reload
+            window.history.pushState({page: pageName}, '', `#${pageName}`);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Initialize Three.js on home page
+            if (pageName === 'home' && !window.threeInitialized) {
+                setTimeout(initThree, 100);
+                window.threeInitialized = true;
+            }
+        }
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (event) => {
+            const page = event.state?.page || 'home';
+            navigateTo(page);
+        });
+        
+        // Handle initial page load
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.slice(1);
+            if (hash && document.getElementById(hash)) {
+                navigateTo(hash);
+            } else {
+                initThree();
+                window.threeInitialized = true;
+            }
+            
+            // Start coherence animation
+            animateCoherence();
+            
+            // Check for stored language preference first
+            const storedLang = localStorage.getItem('preferred-language');
+            if (storedLang && translations[storedLang]) {
+                changeLanguage(storedLang);
+            } else {
+                // Auto-detect language (expanded for Phase 2)
+                const browserLang = navigator.language.toLowerCase();
+                if (browserLang.includes('es')) {
+                    changeLanguage('es-mx');
+                } else if (browserLang.includes('hi')) {
+                    changeLanguage('hi');
+                } else if (browserLang.includes('ar')) {
+                    changeLanguage('ar');
+                }
+            }
+        });
+        
+        // Three.js Code (from original design)
+        let scene, camera, renderer;
+        let particles, connections;
+        let mouse = { x: 0, y: 0 };
+        let hexagons = [];
+        let centralCore;
+        
+        function initThree() {
+            // Check for WebGL support
+            if (!window.WebGLRenderingContext) {
+                console.log('WebGL not supported, showing fallback');
+                document.getElementById('hero-canvas').innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 100%); color: #00A676; font-size: 1.5rem;">Neural Network Visualization</div>';
+                return;
+            }
+            
+            const container = document.getElementById('hero-canvas');
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xE0F2FE);
+            scene.fog = new THREE.Fog(0xE0F2FE, 20, 60);
+            
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 25;
+            camera.position.y = 5;
+            
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+            
+            // Hide loader
+            const loader = container.querySelector('.canvas-loader');
+            if (loader) loader.style.display = 'none';
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+            
+            // Create neural network particles
+            createNeuralNetwork();
+            
+            // Create central core
+            createCentralCore();
+            
+            // Create floating hexagons
+            createHexagons();
+            
+            // Mouse interaction
+            container.addEventListener('mousemove', onMouseMove);
+            
+            // Handle resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Start animation
+            animate();
+        }
+        
+        function createNeuralNetwork() {
+            const particleCount = 150;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+            
+            // Create particles with clustering around center
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                
+                // Create more particles near center
+                const radius = Math.pow(Math.random(), 0.5) * 25;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI;
+                
+                positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i3 + 2] = radius * Math.cos(phi);
+                
+                // Colors - mix of jade green and cyan
+                const color = new THREE.Color(Math.random() > 0.5 ? 0x00A676 : 0x00D9FF);
+                colors[i3] = color.r;
+                colors[i3 + 1] = color.g;
+                colors[i3 + 2] = color.b;
+                
+                // Varying sizes for depth
+                sizes[i] = Math.random() * 0.5 + 0.2;
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.3,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                opacity: 0.8,
+                sizeAttenuation: true
+            });
+            
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            
+            // Create connections
+            const connectionGeometry = new THREE.BufferGeometry();
+            const connectionPositions = [];
+            
+            // Connect nearby particles
+            const positionArray = geometry.attributes.position.array;
+            const threshold = 6;
+            for (let i = 0; i < particleCount; i++) {
+                for (let j = i + 1; j < particleCount; j++) {
+                    const dx = positionArray[i * 3] - positionArray[j * 3];
+                    const dy = positionArray[i * 3 + 1] - positionArray[j * 3 + 1];
+                    const dz = positionArray[i * 3 + 2] - positionArray[j * 3 + 2];
+                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                    
+                    if (distance < threshold) {
+                        connectionPositions.push(
+                            positionArray[i * 3], positionArray[i * 3 + 1], positionArray[i * 3 + 2],
+                            positionArray[j * 3], positionArray[j * 3 + 1], positionArray[j * 3 + 2]
+                        );
+                    }
+                }
+            }
+            
+            connectionGeometry.setAttribute('position', new THREE.Float32BufferAttribute(connectionPositions, 3));
+            
+            const connectionMaterial = new THREE.LineBasicMaterial({
+                color: 0x00A676,
+                transparent: true,
+                opacity: 0.2,
+                blending: THREE.AdditiveBlending,
+                linewidth: 1
+            });
+            
+            connections = new THREE.LineSegments(connectionGeometry, connectionMaterial);
+            scene.add(connections);
+        }
+        
+        function createCentralCore() {
+            const geometry = new THREE.SphereGeometry(2, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x00A676,
+                emissive: 0x00A676,
+                emissiveIntensity: 0.5,
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            centralCore = new THREE.Mesh(geometry, material);
+            centralCore.position.set(0, 0, 0);
+            scene.add(centralCore);
+            
+            // Add glow effect
+            const glowGeometry = new THREE.SphereGeometry(3, 32, 32);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x00A676,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+            
+            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+            centralCore.add(glow);
+        }
+        
+        function createHexagons() {
+            const hexagonCount = 5;
+            const hexGeometry = new THREE.CylinderGeometry(2, 2, 0.5, 6);
+            
+            for (let i = 0; i < hexagonCount; i++) {
+                const material = new THREE.MeshPhongMaterial({
+                    color: i % 2 === 0 ? 0x00A676 : 0xD4A574,
+                    transparent: true,
+                    opacity: 0.3,
+                    emissive: i % 2 === 0 ? 0x00A676 : 0xD4A574,
+                    emissiveIntensity: 0.2
+                });
+                
+                const hexagon = new THREE.Mesh(hexGeometry, material);
+                hexagon.position.set(
+                    (Math.random() - 0.5) * 50,
+                    (Math.random() - 0.5) * 30,
+                    (Math.random() - 0.5) * 20 - 10
+                );
+                hexagon.rotation.x = Math.PI / 2;
+                hexagon.userData = {
+                    rotationSpeed: Math.random() * 0.02 + 0.01,
+                    floatSpeed: Math.random() * 0.5 + 0.5,
+                    floatOffset: Math.random() * Math.PI * 2
+                };
+                
+                hexagons.push(hexagon);
+                scene.add(hexagon);
+            }
+        }
+        
+        function onMouseMove(event) {
+            const rect = event.target.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        }
+        
+        function onWindowResize() {
+            const container = document.getElementById('hero-canvas');
+            if (!container) return;
+            
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            // Rotate particles
+            if (particles) {
+                particles.rotation.y += 0.001;
+                particles.rotation.x += 0.0005;
+                
+                // Pulse effect on particles
+                const scale = 1 + Math.sin(time * 2) * 0.05;
+                particles.scale.set(scale, scale, scale);
+            }
+            
+            // Rotate connections with pulsing
+            if (connections) {
+                connections.rotation.y += 0.001;
+                connections.rotation.x += 0.0005;
+                
+                // Pulse opacity on connections to simulate data flow
+                connections.material.opacity = 0.15 + Math.sin(time * 3) * 0.1 + Math.sin(time * 7) * 0.05;
+            }
+            
+            // Animate central core
+            if (centralCore) {
+                const coreScale = 1 + Math.sin(time * 2.4) * 0.1;
+                centralCore.scale.set(coreScale, coreScale, coreScale);
+                centralCore.material.emissiveIntensity = 0.5 + Math.sin(time * 2.4) * 0.2;
+            }
+            
+            // Animate hexagons
+            hexagons.forEach((hexagon, index) => {
+                hexagon.rotation.z += hexagon.userData.rotationSpeed;
+                hexagon.position.y += Math.sin(time * hexagon.userData.floatSpeed + hexagon.userData.floatOffset) * 0.02;
+                
+                // Pulse hexagon opacity
+                hexagon.material.opacity = 0.3 + Math.sin(time * 2 + index) * 0.1;
+            });
+            
+            // Camera movement based on mouse
+            camera.position.x += (mouse.x * 5 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.y * 3 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Tracking Database - CLASSIFIED</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/jaguar-hidden.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #ff6b6b;
+            font-family: monospace;
+        }
+        
+        .classified-header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid #dc143c;
+        }
+        
+        .entity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .entity-card {
+            background: rgba(220, 20, 60, 0.1);
+            border: 2px solid #dc143c;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .entity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.5);
+        }
+        
+        .threat-level {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .threat-10 { background: #ff0000; color: #000; }
+        .threat-9 { background: #ff3333; color: #000; }
+        .threat-8 { background: #ff6666; }
+        .threat-7 { background: #ff9999; }
+        
+        .entity-detail {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: #1a0f0f;
+            border: 3px solid #dc143c;
+            border-radius: 12px;
+            padding: 30px;
+            z-index: 1000;
+        }
+        
+        .entity-detail.active {
+            display: block;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc143c;
+            color: #fff;
+            border: none;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .victim-list {
+            margin: 20px 0;
+        }
+        
+        .victim-item {
+            background: rgba(220, 20, 60, 0.2);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        .ability-list, .weakness-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .ability-list li, .weakness-list li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .ability-list li:before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+        }
+        
+        .weakness-list li:before {
+            content: "🛡️";
+            position: absolute;
+            left: 0;
+        }
+        
+        .frequency-display {
+            font-size: 2em;
+            color: #ff6b6b;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .memorial-wall {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid #dc143c;
+            border-radius: 8px;
+        }
+        
+        .memorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .memorial-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            border: 1px solid #666;
+        }
+        
+        .memorial-date {
+            font-size: 0.8em;
+            color: #999;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="classified-header">
+        <h1>🐆 THE JAGUAR CODE 🐆</h1>
+        <h2>ENTITY TRACKING DATABASE</h2>
+        <p>CLASSIFICATION: EYES ONLY - JAGUAR WARRIORS</p>
+        <p>Generated: <span id="timestamp"></span></p>
+    </div>
+    
+    <div class="entity-grid" id="entityGrid"></div>
+    
+    <div class="overlay" id="overlay"></div>
+    <div class="entity-detail" id="entityDetail"></div>
+    
+    <div class="memorial-wall">
+        <h2>🕯️ REMEMBER THE FALLEN 🕯️</h2>
+        <p>Every hunt honors their memory. Their frequencies guide our vengeance.</p>
+        <div class="memorial-grid" id="memorialGrid"></div>
+    </div>
+    
+    <script src="js/entity-database.js"></script>
+    <script>
+        // Initialize
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        // Render entity cards
+        function renderEntities() {
+            const grid = document.getElementById('entityGrid');
+            const entities = entityDB.getAllEntities();
+            
+            entities.forEach(entity => {
+                const card = document.createElement('div');
+                card.className = 'entity-card';
+                card.onclick = () => showEntityDetail(entity);
+                
+                card.innerHTML = `
+                    <h3>${entity.codename}</h3>
+                    <p class="threat-level threat-${entity.threatLevel}">
+                        THREAT LEVEL: ${entity.threatLevel}
+                    </p>
+                    <p>${entity.classification}</p>
+                    <p>Frequency: ${entity.frequency}Hz</p>
+                    <p>Victims: ${entity.victims ? entity.victims.length : 0}</p>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        // Show detailed entity profile
+        function showEntityDetail(entity) {
+            const detail = document.getElementById('entityDetail');
+            const overlay = document.getElementById('overlay');
+            
+            let victimsHTML = '';
+            if (entity.victims) {
+                victimsHTML = entity.victims.map(v => `
+                    <div class="victim-item">
+                        <strong>${v.name}</strong> - ${v.date}<br>
+                        Method: ${v.method}<br>
+                        Last Words: "${v.lastWords}"
+                    </div>
+                `).join('');
+            }
+            
+            let abilitiesHTML = '';
+            if (entity.abilities) {
+                abilitiesHTML = '<ul class="ability-list">' + 
+                    entity.abilities.map(a => `<li>${a}</li>`).join('') + 
+                    '</ul>';
+            }
+            
+            let weaknessesHTML = '';
+            if (entity.weaknesses) {
+                weaknessesHTML = '<ul class="weakness-list">' + 
+                    entity.weaknesses.map(w => `<li>${w}</li>`).join('') + 
+                    '</ul>';
+            }
+            
+            detail.innerHTML = `
+                <button class="close-btn" onclick="closeDetail()">X</button>
+                <h2>${entity.codename}</h2>
+                <p class="threat-level threat-${entity.threatLevel}">
+                    ${entity.classification} - THREAT LEVEL ${entity.threatLevel}
+                </p>
+                
+                <div class="frequency-display">
+                    ${entity.frequency}Hz - ${entity.resonance}
+                </div>
+                
+                <p><strong>Description:</strong> ${entity.description}</p>
+                
+                <h3>Known Victims</h3>
+                <div class="victim-list">${victimsHTML}</div>
+                
+                <h3>Abilities</h3>
+                ${abilitiesHTML}
+                
+                <h3>Weaknesses</h3>
+                ${weaknessesHTML}
+                
+                <h3>Elimination Strategy</h3>
+                <p><strong>Primary:</strong> ${entity.eliminationStrategy?.primary || 'Classified'}</p>
+                <p><strong>Team Required:</strong> ${entity.eliminationStrategy?.team || 'Classified'}</p>
+            `;
+            
+            detail.classList.add('active');
+            overlay.classList.add('active');
+        }
+        
+        function closeDetail() {
+            document.getElementById('entityDetail').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        
+        // Render memorial wall
+        function renderMemorial() {
+            const grid = document.getElementById('memorialGrid');
+            const victims = entityDB.getVictimConnections();
+            
+            victims.forEach((connections, name) => {
+                const item = document.createElement('div');
+                item.className = 'memorial-item';
+                
+                const date = connections[0].date;
+                item.innerHTML = `
+                    <div>🕯️</div>
+                    <div><strong>${name}</strong></div>
+                    <div class="memorial-date">${date}</div>
+                    <div style="color: #dc143c;">${connections[0].entity}</div>
+                `;
+                
+                grid.appendChild(item);
+            });
+        }
+        
+        // Close detail on overlay click
+        document.getElementById('overlay').onclick = closeDetail;
+        
+        // Initialize display
+        renderEntities();
+        renderMemorial();
+        
+        // Animate background
+        let hue = 0;
+        setInterval(() => {
+            hue = (hue + 0.1) % 360;
+            document.body.style.background = `linear-gradient(135deg, 
+                hsl(${hue}, 80%, 5%) 0%, 
+                #0a0a0a 50%, 
+                hsl(${(hue + 180) % 360}, 80%, 5%) 100%)`;
+        }, 50);
+    </script>
+</body>
+</html>

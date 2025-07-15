@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAGUAR MISSION CONTROL</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/jaguar-hidden.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #ff6b6b;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        
+        .control-center {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            grid-template-rows: 80px 1fr 200px;
+            height: 100vh;
+            gap: 2px;
+            background: #ff6b6b;
+            padding: 2px;
+        }
+        
+        .panel {
+            background: #0a0a0a;
+            border: 1px solid #dc143c;
+            padding: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, #0a0a0a, #1a0f0f, #0a0a0a);
+            border: 2px solid #dc143c;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(220, 20, 60, 0.8);
+        }
+        
+        .status-bar {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-value {
+            font-size: 1.5em;
+            color: #00ff00;
+        }
+        
+        .status-label {
+            font-size: 0.8em;
+            color: #999;
+        }
+        
+        /* Team Panel */
+        .team-panel {
+            grid-row: 2 / 4;
+        }
+        
+        .warrior-list {
+            margin-top: 20px;
+        }
+        
+        .warrior-card {
+            background: rgba(220, 20, 60, 0.1);
+            border: 1px solid #dc143c;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .warrior-card:hover {
+            background: rgba(220, 20, 60, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .warrior-status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-active { background: #00ff00; }
+        .status-mission { background: #ffaa00; }
+        .status-offline { background: #666; }
+        
+        /* Main Map */
+        .main-display {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #missionMap {
+            width: 100%;
+            height: 100%;
+            background: #030303;
+            position: relative;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            animation: scan-vertical 4s linear infinite;
+        }
+        
+        @keyframes scan-vertical {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        
+        .entity-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+        }
+        
+        .entity-icon {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.2);
+            animation: pulse-threat 2s infinite;
+        }
+        
+        @keyframes pulse-threat {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        /* Mission Panel */
+        .mission-panel {
+            grid-row: 2 / 4;
+            overflow-y: auto;
+        }
+        
+        .mission-card {
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid #666;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mission-card.active {
+            border-color: #ff6b6b;
+            background: rgba(220, 20, 60, 0.1);
+        }
+        
+        .mission-card.critical {
+            border-color: #ff0000;
+            animation: critical-flash 1s infinite;
+        }
+        
+        @keyframes critical-flash {
+            0%, 100% { background: rgba(220, 20, 60, 0.1); }
+            50% { background: rgba(255, 0, 0, 0.2); }
+        }
+        
+        .mission-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .mission-status {
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+        
+        .status-pending { background: #666; }
+        .status-active { background: #ff6b6b; }
+        .status-critical { background: #ff0000; }
+        
+        /* Console */
+        .console-panel {
+            grid-column: 1 / -1;
+            font-family: monospace;
+            overflow-y: auto;
+            background: #000;
+        }
+        
+        .console-line {
+            padding: 2px 0;
+            border-bottom: 1px solid #111;
+        }
+        
+        .console-time {
+            color: #666;
+            margin-right: 10px;
+        }
+        
+        .console-alert { color: #ff0000; }
+        .console-success { color: #00ff00; }
+        .console-info { color: #00aaff; }
+        
+        /* Floating UI Elements */
+        .floating-panel {
+            position: absolute;
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid #dc143c;
+            border-radius: 5px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .entity-detail-popup {
+            width: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .frequency-analyzer {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff00;
+            padding: 10px;
+        }
+        
+        .frequency-display {
+            font-size: 2em;
+            color: #00ff00;
+            text-align: center;
+            font-family: 'Digital', monospace;
+        }
+        
+        /* Vengeance Meter */
+        .vengeance-meter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+        }
+        
+        .vengeance-bar {
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #dc143c;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .vengeance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc143c, #ff6b6b, #ff0000);
+            width: 0%;
+            transition: width 1s ease;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.8);
+        }
+        
+        /* Alert System */
+        .alert-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0a0a0a;
+            border: 3px solid #ff0000;
+            padding: 30px;
+            display: none;
+            z-index: 2000;
+            text-align: center;
+            min-width: 400px;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.8);
+        }
+        
+        .alert-modal.active {
+            display: block;
+            animation: alert-pulse 0.5s infinite;
+        }
+        
+        @keyframes alert-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+        
+        /* Grid overlay effect */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(220, 20, 60, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(220, 20, 60, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+        
+        button {
+            background: #dc143c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #ff6b6b;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.8);
+        }
+        
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: #00ff00;
+            z-index: -1;
+        }
+        
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: #ff00ff;
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { clip: rect(0, 0, 0, 0); }
+            20% { clip: rect(20px, 9999px, 40px, 0); }
+            40% { clip: rect(60px, 9999px, 80px, 0); }
+            60% { clip: rect(100px, 9999px, 120px, 0); }
+            80% { clip: rect(140px, 9999px, 160px, 0); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { clip: rect(0, 0, 0, 0); }
+            20% { clip: rect(10px, 9999px, 30px, 0); }
+            40% { clip: rect(50px, 9999px, 70px, 0); }
+            60% { clip: rect(90px, 9999px, 110px, 0); }
+            80% { clip: rect(130px, 9999px, 150px, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="control-center">
+        <!-- Header -->
+        <div class="panel header">
+            <h1 class="glitch" data-text="JAGUAR MISSION CONTROL">🐆 JAGUAR MISSION CONTROL 🐆</h1>
+            <div class="status-bar">
+                <div class="status-item">
+                    <div class="status-value" id="activeHunts">0</div>
+                    <div class="status-label">ACTIVE HUNTS</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="entitiesTracked">0</div>
+                    <div class="status-label">ENTITIES TRACKED</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="warriorsOnline">0</div>
+                    <div class="status-label">WARRIORS ONLINE</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="systemTime">00:00:00</div>
+                    <div class="status-label">SYSTEM TIME</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team Panel -->
+        <div class="panel team-panel">
+            <h2>WARRIOR STATUS</h2>
+            <div class="warrior-list" id="warriorList">
+                <!-- Warriors will be populated here -->
+            </div>
+            <button onclick="addWarrior()">+ RECRUIT WARRIOR</button>
+        </div>
+        
+        <!-- Main Display -->
+        <div class="panel main-display">
+            <div class="grid-bg"></div>
+            <div id="missionMap">
+                <!-- Entity markers will be placed here -->
+            </div>
+            <div class="map-overlay">
+                <div class="scan-line"></div>
+            </div>
+            <div class="vengeance-meter">
+                <h3>VENGEANCE QUOTIENT</h3>
+                <div class="vengeance-bar">
+                    <div class="vengeance-fill" id="vengeanceFill"></div>
+                </div>
+                <div style="text-align: center; margin-top: 5px;">
+                    <span id="vengeancePercent">0</span>% CHARGED
+                </div>
+            </div>
+            <div class="frequency-analyzer">
+                <div>FREQUENCY SCAN</div>
+                <div class="frequency-display" id="frequencyDisplay">000 Hz</div>
+            </div>
+        </div>
+        
+        <!-- Mission Panel -->
+        <div class="panel mission-panel">
+            <h2>ACTIVE MISSIONS</h2>
+            <button onclick="generateNewMission()" style="width: 100%; margin: 10px 0;">
+                GENERATE HUNT MISSION
+            </button>
+            <div id="missionList">
+                <!-- Missions will be populated here -->
+            </div>
+        </div>
+        
+        <!-- Console -->
+        <div class="panel console-panel" id="console">
+            <div class="console-line console-info">
+                <span class="console-time">00:00:00</span>
+                JAGUAR MISSION CONTROL INITIALIZED
+            </div>
+            <div class="console-line console-success">
+                <span class="console-time">00:00:01</span>
+                CONNECTION ESTABLISHED - SECURE CHANNEL ACTIVE
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating panels -->
+    <div class="floating-panel entity-detail-popup" id="entityDetail"></div>
+    
+    <!-- Alert Modal -->
+    <div class="alert-modal" id="alertModal">
+        <h2 id="alertTitle">ALERT</h2>
+        <p id="alertMessage"></p>
+        <button onclick="closeAlert()">ACKNOWLEDGE</button>
+    </div>
+    
+    <script src="js/entity-database.js"></script>
+    <script src="js/mission-generator.js"></script>
+    <script>
+        // Initialize systems
+        const missionGen = new MissionGenerator();
+        let warriors = [
+            { id: 'W001', name: 'Alejandro', role: 'Lead Hunter', status: 'active', band: 33 },
+            { id: 'W002', name: 'Aurora', role: 'Frequency Master', status: 'active', band: 21 },
+            { id: 'W003', name: 'Gal Dorado', role: 'Portal Guardian', status: 'active', band: 27 }
+        ];
+        let vengeanceLevel = 0;
+        let activeFrequency = 432;
+        
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('systemTime').textContent = 
+                now.toTimeString().split(' ')[0];
+        }
+        setInterval(updateTime, 1000);
+        
+        // Console logging
+        function log(message, type = 'info') {
+            const console = document.getElementById('console');
+            const time = new Date().toTimeString().split(' ')[0];
+            const line = document.createElement('div');
+            line.className = `console-line console-${type}`;
+            line.innerHTML = `<span class="console-time">${time}</span>${message}`;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+        
+        // Initialize warriors
+        function renderWarriors() {
+            const list = document.getElementById('warriorList');
+            list.innerHTML = '';
+            
+            warriors.forEach(warrior => {
+                const card = document.createElement('div');
+                card.className = 'warrior-card';
+                card.innerHTML = `
+                    <span class="warrior-status status-${warrior.status}"></span>
+                    <strong>${warrior.name}</strong>
+                    <div style="font-size: 0.8em; color: #999;">
+                        ${warrior.role} | Band ${warrior.band}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            
+            document.getElementById('warriorsOnline').textContent = 
+                warriors.filter(w => w.status === 'active').length;
+        }
+        
+        // Initialize entity tracking
+        function initializeEntityTracking() {
+            const map = document.getElementById('missionMap');
+            const entities = entityDB.getAllEntities();
+            
+            entities.forEach((entity, index) => {
+                const marker = document.createElement('div');
+                marker.className = 'entity-marker';
+                marker.style.left = (20 + (index * 15)) + '%';
+                marker.style.top = (20 + (index * 20)) + '%';
+                marker.innerHTML = '<div class="entity-icon"></div>';
+                marker.onclick = () => showEntityDetail(entity);
+                
+                map.appendChild(marker);
+            });
+            
+            document.getElementById('entitiesTracked').textContent = entities.length;
+            log(`TRACKING ${entities.length} HOSTILE ENTITIES`, 'alert');
+        }
+        
+        // Show entity details
+        function showEntityDetail(entity) {
+            const detail = document.getElementById('entityDetail');
+            detail.innerHTML = `
+                <h3>${entity.codename}</h3>
+                <p>Classification: ${entity.classification}</p>
+                <p>Threat Level: ${entity.threatLevel}</p>
+                <p>Frequency: ${entity.frequency}Hz</p>
+                <p>Victims: ${entity.victims?.length || 0}</p>
+                <button onclick="generateMissionForEntity('${entity.id}')">
+                    GENERATE HUNT MISSION
+                </button>
+                <button onclick="closeEntityDetail()">CLOSE</button>
+            `;
+            detail.style.display = 'block';
+            detail.style.left = '50%';
+            detail.style.top = '50%';
+            detail.style.transform = 'translate(-50%, -50%)';
+        }
+        
+        function closeEntityDetail() {
+            document.getElementById('entityDetail').style.display = 'none';
+        }
+        
+        // Mission generation
+        function generateNewMission() {
+            const entities = entityDB.getAllEntities();
+            const randomEntity = entities[Math.floor(Math.random() * entities.length)];
+            generateMissionForEntity(randomEntity.id);
+        }
+        
+        function generateMissionForEntity(entityId) {
+            const urgency = Math.random() > 0.7 ? 'critical' : 'standard';
+            const mission = missionGen.generateMission(entityId, urgency);
+            
+            if (mission) {
+                renderMissions();
+                log(`NEW MISSION GENERATED: ${mission.codename}`, 'alert');
+                showAlert('NEW HUNT MISSION', `${mission.codename} - Target: ${mission.target}`);
+                updateVengeance(10);
+            }
+            
+            closeEntityDetail();
+        }
+        
+        // Render missions
+        function renderMissions() {
+            const list = document.getElementById('missionList');
+            list.innerHTML = '';
+            
+            missionGen.activeMissions.forEach(mission => {
+                const card = document.createElement('div');
+                card.className = `mission-card ${mission.status} ${mission.urgency}`;
+                card.innerHTML = `
+                    <div class="mission-header">
+                        <strong>${mission.codename}</strong>
+                        <span class="mission-status status-${mission.status}">
+                            ${mission.status.toUpperCase()}
+                        </span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #ccc;">
+                        Target: ${mission.target}<br>
+                        Location: ${mission.location.primary}<br>
+                        Team Required: ${mission.requiredTeam.minimum} warriors
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="startMission('${mission.id}')">
+                            START HUNT
+                        </button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            
+            document.getElementById('activeHunts').textContent = 
+                missionGen.activeMissions.filter(m => m.status === 'active').length;
+        }
+        
+        // Start mission
+        function startMission(missionId) {
+            const team = warriors.filter(w => w.status === 'active').slice(0, 3);
+            missionGen.startMission(missionId, team);
+            renderMissions();
+            log(`MISSION ACTIVATED: Deploying ${team.length} warriors`, 'success');
+            updateVengeance(20);
+            
+            // Simulate mission progress
+            setTimeout(() => {
+                const mission = missionGen.activeMissions.find(m => m.id === missionId);
+                if (mission) {
+                    mission.objectives.forEach(obj => {
+                        missionGen.updateMissionProgress(missionId, obj.id, true);
+                    });
+                    renderMissions();
+                    log(`MISSION COMPLETE: ${mission.codename}`, 'success');
+                    updateVengeance(50);
+                }
+            }, 10000);
+        }
+        
+        // Update vengeance meter
+        function updateVengeance(amount) {
+            vengeanceLevel = Math.min(100, vengeanceLevel + amount);
+            document.getElementById('vengeanceFill').style.width = vengeanceLevel + '%';
+            document.getElementById('vengeancePercent').textContent = vengeanceLevel;
+            
+            if (vengeanceLevel >= 100) {
+                showAlert('VENGEANCE READY', 'Loop Vengeance Engine fully charged!');
+                vengeanceLevel = 0;
+            }
+        }
+        
+        // Frequency scanner
+        function scanFrequencies() {
+            activeFrequency = 400 + Math.floor(Math.random() * 400);
+            document.getElementById('frequencyDisplay').textContent = activeFrequency + ' Hz';
+            
+            // Check for entity frequencies
+            const entities = entityDB.getAllEntities();
+            entities.forEach(entity => {
+                if (Math.abs(entity.frequency - activeFrequency) < 10) {
+                    log(`ENTITY FREQUENCY DETECTED: ${entity.codename} at ${entity.frequency}Hz`, 'alert');
+                }
+            });
+        }
+        setInterval(scanFrequencies, 3000);
+        
+        // Alert system
+        function showAlert(title, message) {
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').textContent = message;
+            document.getElementById('alertModal').classList.add('active');
+        }
+        
+        function closeAlert() {
+            document.getElementById('alertModal').classList.remove('active');
+        }
+        
+        // Add warrior
+        function addWarrior() {
+            const name = prompt('Enter warrior name:');
+            if (name) {
+                warriors.push({
+                    id: 'W' + Date.now(),
+                    name: name,
+                    role: 'Hunter',
+                    status: 'active',
+                    band: Math.floor(Math.random() * 33) + 1
+                });
+                renderWarriors();
+                log(`NEW WARRIOR RECRUITED: ${name}`, 'success');
+            }
+        }
+        
+        // Initialize everything
+        window.onload = function() {
+            renderWarriors();
+            initializeEntityTracking();
+            renderMissions();
+            log('ALL SYSTEMS OPERATIONAL', 'success');
+            log('THE HUNT BEGINS', 'alert');
+        };
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeEntityDetail();
+                closeAlert();
+            }
+            if (e.key === 'm' && e.ctrlKey) {
+                generateNewMission();
+            }
+        });
+    </script>
+</body>
+</html>

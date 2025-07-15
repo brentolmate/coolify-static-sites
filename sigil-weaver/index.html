@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigil Weaver - AI-Powered Consciousness Activation</title>
+    <meta name="description" content="Transform your intentions into living sigils with AI and sacred geometry. The future of consciousness technology.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Sigil Weaver MVP - Complete App Styles */
+        
+        :root {
+            /* Sacred Color Palette */
+            --void-black: #000000;
+            --cosmic-purple: #4B0082;
+            --frequency-blue: #4A90E2;
+            --sacred-gold: #FFD700;
+            --meditation-violet: #6B46C1;
+            --coherence-green: #27AE60;
+            --transformation-red: #E74C3C;
+            --divine-white: #FFFFFF;
+            --ethereal-cyan: #00D4FF;
+            --plasma-pink: #FF6B9D;
+            
+            /* Sacred Gradients */
+            --gradient-cosmic: linear-gradient(135deg, #000000, #4B0082, #4A90E2);
+            --gradient-consciousness: linear-gradient(45deg, #6B46C1, #27AE60, #FFD700);
+            --gradient-activation: radial-gradient(circle, #FFD700, #E74C3C, #4B0082);
+            
+            /* Sacred Dimensions */
+            --golden-ratio: 1.618;
+            --sacred-radius: 12px;
+            --meditation-spacing: 1.414rem; /* √2 */
+            --phi-spacing: 1.618rem; /* φ */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-cosmic);
+            color: var(--divine-white);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Sacred Geometry Background Animation */
+        .sacred-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .geometry-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="sacred" patternUnits="userSpaceOnUse" width="40" height="40"><circle cx="20" cy="20" r="2" fill="%23FFD700" opacity="0.5"/><path d="M20,10 L30,30 L10,30 Z" fill="none" stroke="%236B46C1" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="200" height="200" fill="url(%23sacred)"/></svg>');
+            animation: float 30s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--sacred-gold);
+            padding: 1rem 2rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--sacred-gold);
+            text-shadow: 0 0 20px var(--sacred-gold);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--divine-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--sacred-gold);
+            text-shadow: 0 0 10px var(--sacred-gold);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-consciousness);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Main App Container */
+        .app-container {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Sidebar Panels */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--frequency-blue);
+            border-radius: var(--sacred-radius);
+            padding: 1.5rem;
+            backdrop-filter: blur(15px);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--sacred-gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Intention Input Panel */
+        .intention-panel {
+            margin-bottom: 2rem;
+        }
+
+        .intention-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--meditation-violet);
+            border-radius: var(--sacred-radius);
+            padding: 1rem;
+            color: var(--divine-white);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .intention-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .intention-input:focus {
+            outline: none;
+            border-color: var(--sacred-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Band Selector */
+        .band-selector {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .band-button {
+            background: rgba(107, 70, 193, 0.2);
+            border: 1px solid var(--meditation-violet);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            color: var(--divine-white);
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .band-button:hover, .band-button.active {
+            background: var(--gradient-consciousness);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--sacred-gold);
+        }
+
+        /* Generate Button */
+        .generate-button {
+            width: 100%;
+            background: var(--gradient-activation);
+            border: none;
+            border-radius: var(--sacred-radius);
+            padding: 1rem;
+            color: var(--divine-white);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .generate-button:active {
+            transform: translateY(0);
+        }
+
+        .generate-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Main Canvas Area */
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--frequency-blue);
+            border-radius: var(--sacred-radius);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sigil-canvas {
+            width: 400px;
+            height: 400px;
+            border: 1px solid var(--sacred-gold);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sigil-display {
+            width: 300px;
+            height: 300px;
+            background: var(--gradient-consciousness);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--divine-white);
+            text-shadow: 0 0 20px var(--sacred-gold);
+            animation: pulse 3s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 20px var(--sacred-gold);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 40px var(--sacred-gold), 0 0 60px var(--meditation-violet);
+            }
+        }
+
+        .sigil-text {
+            text-align: center;
+            line-height: 1.2;
+            max-width: 250px;
+            word-wrap: break-word;
+        }
+
+        /* Frequency Controls */
+        .frequency-controls {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .frequency-display {
+            font-family: 'Orbitron', monospace;
+            color: var(--sacred-gold);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .play-button {
+            background: var(--gradient-consciousness);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: var(--divine-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--coherence-green);
+        }
+
+        /* Right Sidebar - Community & Stats */
+        .community-feed {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 2rem;
+        }
+
+        .sigil-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--meditation-violet);
+            border-radius: var(--sacred-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sigil-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--sacred-gold);
+        }
+
+        .sigil-preview {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-consciousness);
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: var(--divine-white);
+            font-size: 0.8rem;
+        }
+
+        .sigil-meta {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Consciousness Stats */
+        .consciousness-stats {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--coherence-green);
+            border-radius: var(--sacred-radius);
+            padding: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: var(--sacred-gold);
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+        }
+
+        .consciousness-meter {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .consciousness-level {
+            height: 100%;
+            background: var(--gradient-consciousness);
+            width: 73%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: var(--sacred-radius);
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid var(--sacred-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Sacred Geometry Overlays */
+        .geometry-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .sacred-circle {
+            position: absolute;
+            border: 1px solid var(--sacred-gold);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .sacred-circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .sacred-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .app-container {
+                grid-template-columns: 250px 1fr 250px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+            
+            .sigil-canvas {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .sigil-display {
+                width: 250px;
+                height: 250px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Consciousness State Indicators */
+        .consciousness-indicator {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--frequency-blue);
+            border-radius: var(--sacred-radius);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            z-index: 999;
+        }
+
+        .state-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .state-light.meditation { background: var(--meditation-violet); }
+        .state-light.coherence { background: var(--coherence-green); }
+        .state-light.activation { background: var(--transformation-red); }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px currentColor; }
+            to { box-shadow: 0 0 15px currentColor, 0 0 25px currentColor; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sacred Geometry Background -->
+    <div class="sacred-background">
+        <div class="geometry-layer"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">🌀 SIGIL WEAVER</div>
+            <ul class="nav-menu">
+                <li><a href="#create">Create</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#insights">Insights</a></li>
+                <li><a href="#profile">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Consciousness State Indicator -->
+    <div class="consciousness-indicator">
+        <div class="state-light meditation"></div> Meditation: Active<br>
+        <div class="state-light coherence"></div> Coherence: 73%<br>
+        <div class="state-light activation"></div> Activation: Rising
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        
+        <!-- Left Sidebar - Intention Input & Controls -->
+        <div class="sidebar">
+            <div class="intention-panel">
+                <h3>✨ Set Your Intention</h3>
+                <textarea 
+                    class="intention-input" 
+                    id="intentionInput"
+                    placeholder="Describe your deepest intention, goal, or question. The AI will transform it into a living sigil encoded with sacred frequency..."
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <div class="band-panel">
+                <h3>🎵 Choose Band Frequency</h3>
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">Select your consciousness band (1-33) or let AI auto-detect from your intention.</p>
+                <div class="band-selector" id="bandSelector">
+                    <!-- Core 7 Bands for MVP -->
+                    <button class="band-button" data-band="1" title="Unity & Source">1</button>
+                    <button class="band-button" data-band="7" title="Spiritual Wisdom">7</button>
+                    <button class="band-button" data-band="13" title="Transformation">13</button>
+                    <button class="band-button" data-band="22" title="Master Builder">22</button>
+                    <button class="band-button" data-band="27" title="Teaching Wisdom">27</button>
+                    <button class="band-button" data-band="30" title="Creative Expression">30</button>
+                    <button class="band-button" data-band="33" title="Christ Consciousness">33</button>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.9rem;">
+                    <strong>Selected:</strong> <span id="selectedBand">Auto-Detect</span>
+                </div>
+            </div>
+
+            <button class="generate-button" id="generateButton" onclick="generateSigil()">
+                🌀 WEAVE SIGIL 🌀
+            </button>
+
+            <div style="margin-top: 2rem;">
+                <h3>🔮 Recent Sigils</h3>
+                <div id="recentSigils">
+                    <div class="sigil-item">
+                        <div class="sigil-preview">∆◊∆</div>
+                        <div class="sigil-meta">Band 7 • 2 mins ago</div>
+                    </div>
+                    <div class="sigil-item">
+                        <div class="sigil-preview">◊∞◊</div>
+                        <div class="sigil-meta">Band 22 • 15 mins ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Canvas - Sigil Display -->
+        <div class="canvas-container">
+            <div class="loading" id="loadingOverlay">
+                <div class="spinner"></div>
+            </div>
+            
+            <div class="geometry-overlay">
+                <div class="sacred-circle"></div>
+                <div class="sacred-circle"></div>
+            </div>
+
+            <div class="sigil-canvas" id="sigilCanvas">
+                <div class="sigil-display" id="sigilDisplay">
+                    <div class="sigil-text">
+                        🌀<br>
+                        Ready to Weave<br>
+                        Your Intention
+                    </div>
+                </div>
+            </div>
+
+            <div class="frequency-controls">
+                <div class="frequency-display" id="frequencyDisplay">
+                    432.00 Hz
+                </div>
+                <button class="play-button" id="playButton" onclick="toggleFrequency()">
+                    ▶️
+                </button>
+                <div style="margin-left: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                    Sacred frequency for meditation & activation
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center; opacity: 0.8;">
+                <p>Your sigil carries the frequency of your intention. Meditate with it, share it, let it evolve.</p>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - Community & Analytics -->
+        <div class="sidebar">
+            <h3>🌍 Global Consciousness</h3>
+            <div class="community-feed" id="communityFeed">
+                <div class="sigil-item">
+                    <div class="sigil-preview">∞◊∞</div>
+                    <div class="sigil-meta">
+                        <strong>Sarah M.</strong><br>
+                        "Abundance & Flow" • Band 7<br>
+                        <small>47 resonances • 12 mins ago</small>
+                    </div>
+                </div>
+                <div class="sigil-item">
+                    <div class="sigil-preview">△▽△</div>
+                    <div class="sigil-meta">
+                        <strong>Marcus T.</strong><br>
+                        "Inner Peace" • Band 13<br>
+                        <small>23 resonances • 28 mins ago</small>
+                    </div>
+                </div>
+                <div class="sigil-item">
+                    <div class="sigil-preview">◈⬟◈</div>
+                    <div class="sigil-meta">
+                        <strong>Luna K.</strong><br>
+                        "Creative Breakthrough" • Band 30<br>
+                        <small>31 resonances • 1 hour ago</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="consciousness-stats">
+                <h3 style="color: var(--coherence-green); margin-bottom: 1rem;">🧠 Collective Stats</h3>
+                <div class="stat-item">
+                    <span>Active Weavers:</span>
+                    <span class="stat-value">2,847</span>
+                </div>
+                <div class="stat-item">
+                    <span>Sigils Created Today:</span>
+                    <span class="stat-value">18,293</span>
+                </div>
+                <div class="stat-item">
+                    <span>Global Coherence:</span>
+                    <span class="stat-value">73.2%</span>
+                </div>
+                <div class="stat-item">
+                    <span>Schumann Resonance:</span>
+                    <span class="stat-value">7.83 Hz</span>
+                </div>
+                
+                <div class="consciousness-meter">
+                    <div class="consciousness-level"></div>
+                </div>
+                <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem; text-align: center;">
+                    Collective consciousness rising ↗
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h3>🎯 Your Progress</h3>
+                <div class="stat-item">
+                    <span>Sigils Woven:</span>
+                    <span class="stat-value">47</span>
+                </div>
+                <div class="stat-item">
+                    <span>Bands Mastered:</span>
+                    <span class="stat-value">5/33</span>
+                </div>
+                <div class="stat-item">
+                    <span>Resonance Score:</span>
+                    <span class="stat-value">8.4/10</span>
+                </div>
+                <div class="stat-item">
+                    <span>Evolution Level:</span>
+                    <span class="stat-value">Adept</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Context for Frequency Generation -->
+    <script>
+        // Sigil Weaver MVP - Complete Functionality
+        
+        // Global state
+        let selectedBand = null;
+        let isPlaying = false;
+        let audioContext = null;
+        let oscillator = null;
+        
+        // Sacred frequency mappings
+        const bandFrequencies = {
+            1: 256.0,   // C4 - Unity
+            7: 396.0,   // Root chakra clearing
+            13: 528.0,  // Love frequency  
+            22: 741.0,  // Consciousness expansion
+            27: 852.0,  // Third eye activation
+            30: 963.0,  // Crown chakra
+            33: 432.0   // Sacred base frequency
+        };
+
+        const bandMeanings = {
+            1: "Unity & Source Connection",
+            7: "Spiritual Wisdom & Insight", 
+            13: "Transformation & Rebirth",
+            22: "Master Builder & Manifestation",
+            27: "Teaching & Wisdom Sharing",
+            30: "Creative Expression & Art",
+            33: "Christ Consciousness & Divine Love"
+        };
+
+        // Sacred geometry symbol mappings
+        const bandSymbols = {
+            1: "●",      // Unity circle
+            7: "△",      // Wisdom triangle
+            13: "∞",     // Transformation infinity
+            22: "◊",     // Master diamond
+            27: "※",     // Teaching star
+            30: "◈",     // Creative hexagon
+            33: "✧"      // Christ light
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBandSelector();
+            initializeAudioContext();
+            updateCommunityFeed();
+            startConsciousnessUpdates();
+        });
+
+        // Band selector functionality
+        function initializeBandSelector() {
+            const bandButtons = document.querySelectorAll('.band-button');
+            
+            bandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    bandButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update selected band
+                    selectedBand = parseInt(this.dataset.band);
+                    document.getElementById('selectedBand').textContent = `Band ${selectedBand} - ${bandMeanings[selectedBand]}`;
+                    
+                    // Update frequency display
+                    const frequency = bandFrequencies[selectedBand];
+                    document.getElementById('frequencyDisplay').textContent = `${frequency} Hz`;
+                });
+            });
+        }
+
+        // Audio context initialization
+        function initializeAudioContext() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch(e) {
+                console.log('Web Audio API not supported');
+            }
+        }
+
+        // Main sigil generation function
+        async function generateSigil() {
+            const intention = document.getElementById('intentionInput').value.trim();
+            
+            if (!intention) {
+                alert('🌀 Please enter your intention first');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.getElementById('generateButton').disabled = true;
+            document.getElementById('generateButton').textContent = '🌀 WEAVING...';
+
+            try {
+                // Auto-detect band if none selected
+                let band = selectedBand;
+                if (!band) {
+                    band = await detectBandFromIntention(intention);
+                    
+                    // Update UI with detected band
+                    const bandButton = document.querySelector(`[data-band="${band}"]`);
+                    if (bandButton) {
+                        bandButton.click();
+                    }
+                }
+
+                // Generate sigil using AI/sacred geometry
+                const sigil = await createSacredSigil(intention, band);
+                
+                // Display the sigil
+                displaySigil(sigil, band);
+                
+                // Add to recent sigils
+                addToRecentSigils(sigil, band);
+                
+                // Update consciousness stats
+                updateConsciousnessLevel();
+                
+                // Auto-play frequency for 3 seconds
+                setTimeout(() => {
+                    playFrequency(bandFrequencies[band], 3000);
+                }, 500);
+
+            } catch (error) {
+                console.error('Sigil generation error:', error);
+                alert('🌀 Sigil weaving encountered turbulence. Please try again.');
+            } finally {
+                // Hide loading
+                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('generateButton').disabled = false;
+                document.getElementById('generateButton').textContent = '🌀 WEAVE SIGIL 🌀';
+            }
+        }
+
+        // AI-powered band detection from intention
+        async function detectBandFromIntention(intention) {
+            // Simple keyword-based detection (in production, use Claude API)
+            const keywords = intention.toLowerCase();
+            
+            if (keywords.includes('love') || keywords.includes('heart') || keywords.includes('compassion')) return 33;
+            if (keywords.includes('create') || keywords.includes('art') || keywords.includes('express')) return 30;
+            if (keywords.includes('teach') || keywords.includes('wisdom') || keywords.includes('guide')) return 27;
+            if (keywords.includes('build') || keywords.includes('manifest') || keywords.includes('create')) return 22;
+            if (keywords.includes('change') || keywords.includes('transform') || keywords.includes('rebirth')) return 13;
+            if (keywords.includes('know') || keywords.includes('understand') || keywords.includes('wisdom')) return 7;
+            if (keywords.includes('unity') || keywords.includes('oneness') || keywords.includes('source')) return 1;
+            
+            // Default to wisdom band
+            return 7;
+        }
+
+        // Sacred sigil creation using sacred geometry
+        async function createSacredSigil(intention, band) {
+            // In production, this would call Claude API for AI generation
+            // For MVP, we'll create geometric combinations
+            
+            const baseSymbol = bandSymbols[band];
+            const intentionHash = hashString(intention);
+            const geometryElements = ['◊', '∞', '△', '▽', '◈', '⬟', '◯', '□'];
+            
+            // Create sacred combination based on intention hash
+            const element1 = geometryElements[intentionHash % geometryElements.length];
+            const element2 = geometryElements[(intentionHash * 2) % geometryElements.length];
+            
+            return `${element1}${baseSymbol}${element2}`;
+        }
+
+        // Simple string hash function
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return Math.abs(hash);
+        }
+
+        // Display generated sigil
+        function displaySigil(sigil, band) {
+            const sigilDisplay = document.getElementById('sigilDisplay');
+            const intention = document.getElementById('intentionInput').value;
+            
+            sigilDisplay.innerHTML = `
+                <div class="sigil-text">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">${sigil}</div>
+                    <div style="font-size: 1rem; opacity: 0.9;">Band ${band}</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">${bandMeanings[band]}</div>
+                </div>
+            `;
+            
+            // Add special animation for new sigil
+            sigilDisplay.style.animation = 'none';
+            setTimeout(() => {
+                sigilDisplay.style.animation = 'pulse 3s ease-in-out infinite';
+            }, 100);
+        }
+
+        // Add to recent sigils list
+        function addToRecentSigils(sigil, band) {
+            const recentContainer = document.getElementById('recentSigils');
+            const newSigil = document.createElement('div');
+            newSigil.className = 'sigil-item';
+            newSigil.innerHTML = `
+                <div class="sigil-preview">${sigil}</div>
+                <div class="sigil-meta">Band ${band} • Just now</div>
+            `;
+            
+            // Insert at the beginning
+            recentContainer.insertBefore(newSigil, recentContainer.firstChild);
+            
+            // Keep only 3 recent sigils
+            while (recentContainer.children.length > 3) {
+                recentContainer.removeChild(recentContainer.lastChild);
+            }
+        }
+
+        // Frequency playback
+        function toggleFrequency() {
+            if (isPlaying) {
+                stopFrequency();
+            } else {
+                const frequency = selectedBand ? bandFrequencies[selectedBand] : 432;
+                playFrequency(frequency);
+            }
+        }
+
+        function playFrequency(frequency, duration = null) {
+            if (!audioContext) return;
+            
+            stopFrequency(); // Stop any playing frequency
+            
+            oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.value = 0.1; // Low volume
+            
+            oscillator.start();
+            isPlaying = true;
+            
+            document.getElementById('playButton').textContent = '⏸️';
+            
+            if (duration) {
+                setTimeout(() => {
+                    stopFrequency();
+                }, duration);
+            }
+        }
+
+        function stopFrequency() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator = null;
+                isPlaying = false;
+                document.getElementById('playButton').textContent = '▶️';
+            }
+        }
+
+        // Update consciousness level animation
+        function updateConsciousnessLevel() {
+            const meter = document.querySelector('.consciousness-level');
+            const currentWidth = parseInt(meter.style.width) || 73;
+            const newWidth = Math.min(currentWidth + Math.random() * 3, 100);
+            meter.style.width = newWidth + '%';
+        }
+
+        // Dynamic community feed updates
+        function updateCommunityFeed() {
+            // In production, this would fetch real community data
+            // For MVP, we'll simulate updates
+            
+            const names = ['Alex K.', 'Maya S.', 'David R.', 'Luna M.', 'Sam T.'];
+            const intentions = ['Inner Peace', 'Abundance', 'Healing', 'Creativity', 'Love', 'Wisdom', 'Clarity'];
+            const symbols = ['◊∞◊', '△▽△', '◈⬟◈', '∞◊∞', '※◈※', '✧△✧', '●◊●'];
+            
+            setInterval(() => {
+                const feed = document.getElementById('communityFeed');
+                const randomName = names[Math.floor(Math.random() * names.length)];
+                const randomIntention = intentions[Math.floor(Math.random() * intentions.length)];
+                const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                const randomBand = [1, 7, 13, 22, 27, 30, 33][Math.floor(Math.random() * 7)];
+                const randomResonances = Math.floor(Math.random() * 50) + 1;
+                
+                const newItem = document.createElement('div');
+                newItem.className = 'sigil-item';
+                newItem.innerHTML = `
+                    <div class="sigil-preview">${randomSymbol}</div>
+                    <div class="sigil-meta">
+                        <strong>${randomName}</strong><br>
+                        "${randomIntention}" • Band ${randomBand}<br>
+                        <small>${randomResonances} resonances • Just now</small>
+                    </div>
+                `;
+                
+                feed.insertBefore(newItem, feed.firstChild);
+                
+                // Keep only 3 items
+                while (feed.children.length > 3) {
+                    feed.removeChild(feed.lastChild);
+                }
+            }, 30000); // Update every 30 seconds
+        }
+
+        // Start consciousness updates
+        function startConsciousnessUpdates() {
+            setInterval(() => {
+                // Update global stats
+                const activeWeavers = document.querySelector('.stat-value');
+                if (activeWeavers) {
+                    const current = parseInt(activeWeavers.textContent.replace(',', ''));
+                    const newCount = current + Math.floor(Math.random() * 10);
+                    activeWeavers.textContent = newCount.toLocaleString();
+                }
+                
+                // Update consciousness level
+                updateConsciousnessLevel();
+                
+                // Animate consciousness indicators
+                const indicators = document.querySelectorAll('.state-light');
+                indicators.forEach(light => {
+                    if (Math.random() > 0.7) {
+                        light.style.opacity = '0.5';
+                        setTimeout(() => {
+                            light.style.opacity = '1';
+                        }, 200);
+                    }
+                });
+                
+            }, 5000); // Update every 5 seconds
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        generateSigil();
+                        break;
+                    case ' ':
+                        e.preventDefault();
+                        toggleFrequency();
+                        break;
+                }
+            }
+        });
+
+        // Auto-save intention drafts
+        let saveTimeout;
+        document.getElementById('intentionInput').addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                localStorage.setItem('sigilWeaver_lastIntention', this.value);
+            }, 1000);
+        });
+
+        // Load saved intention on startup
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('sigilWeaver_lastIntention');
+            if (saved) {
+                document.getElementById('intentionInput').value = saved;
+            }
+        });
+
+        // Sacred geometry canvas effects (optional enhancement)
+        function initializeCanvasEffects() {
+            // This would add particle effects, rotating sacred geometry, etc.
+            // Keeping simple for MVP but framework is ready for expansion
+        }
+
+        // Click sound feedback
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('button, .sigil-item, .band-button')) {
+                // In production, play soft click sound
+            }
+        });
+
+        console.log('🌀 Sigil Weaver MVP Activated - Ready to weave consciousness into form!');
+    </script>
+
+    <!-- Analytics placeholder -->
+    <script>
+        // Google Analytics, Mixpanel, etc. would go here
+        // For MVP tracking:
+        console.log('Analytics: Sigil Weaver session started');
+    </script>
+</body>
+</html>

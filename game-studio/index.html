@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JagOps Tactical - Advanced Training Systems</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/editor.css">
+    <link rel="stylesheet" href="styles/jaguar-hidden.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Sacred Game Studio Interface -->
+        <div class="studio-container">
+            <!-- Top Bar -->
+            <header class="studio-header">
+                <div class="logo">
+                    <span class="sacred-symbol">🐆</span>
+                    <h1>JagOps Tactical</h1>
+                    <span class="band-level" v-if="hiddenMode">Band {{ currentBand }}</span>
+                    <span class="band-level" v-else>Level {{ operatorLevel }}</span>
+                </div>
+                <nav class="main-nav">
+                    <button @click="activeTab = 'editor'" :class="{active: activeTab === 'editor'}">
+                        Editor
+                    </button>
+                    <button @click="activeTab = 'assets'" :class="{active: activeTab === 'assets'}">
+                        Assets
+                    </button>
+                    <button @click="activeTab = 'mechanics'" :class="{active: activeTab === 'mechanics'}">
+                        Mechanics
+                    </button>
+                    <button @click="activeTab = 'multiplayer'" :class="{active: activeTab === 'multiplayer'}">
+                        Multiplayer
+                    </button>
+                </nav>
+                <div class="coherence-meter">
+                    <span v-if="hiddenMode">Coherence</span>
+                    <span v-else>Readiness</span>
+                    <div class="meter-bar">
+                        <div class="meter-fill" :style="{width: coherence * 100 + '%'}"></div>
+                    </div>
+                    <span>{{ (coherence * 100).toFixed(0) }}%</span>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="studio-main">
+                <!-- Editor Tab -->
+                <div v-if="activeTab === 'editor'" class="editor-container">
+                    <aside class="scene-tree">
+                        <h3>Scene</h3>
+                        <div class="tree-view">
+                            <div v-for="node in sceneNodes" :key="node.id" 
+                                 class="tree-node" 
+                                 :class="{selected: selectedNode === node}"
+                                 @click="selectNode(node)">
+                                <span class="node-icon">{{ node.icon }}</span>
+                                <span class="node-name">{{ node.name }}</span>
+                            </div>
+                        </div>
+                        <button class="add-node-btn" @click="showNodeMenu = true">
+                            + Add Node
+                        </button>
+                    </aside>
+
+                    <div class="viewport">
+                        <canvas ref="gameCanvas" width="800" height="600"></canvas>
+                        <div class="viewport-controls">
+                            <button @click="playGame">▶ Play</button>
+                            <button @click="pauseGame">⏸ Pause</button>
+                            <button @click="stopGame">⏹ Stop</button>
+                        </div>
+                    </div>
+
+                    <aside class="inspector">
+                        <h3>Inspector</h3>
+                        <div v-if="selectedNode" class="node-properties">
+                            <h4>{{ selectedNode.name }}</h4>
+                            <div class="property" v-for="(value, key) in selectedNode.properties" :key="key">
+                                <label>{{ key }}:</label>
+                                <input v-model="selectedNode.properties[key]" 
+                                       :type="getInputType(value)"
+                                       @change="updateNodeProperty(selectedNode, key)">
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <!-- Assets Tab -->
+                <div v-if="activeTab === 'assets'" class="assets-container">
+                    <div class="asset-generator">
+                        <h2>{{ hiddenMode ? 'Entity Signature Generator' : 'Tactical Asset Generator' }}</h2>
+                        <div class="generator-form">
+                            <select v-model="assetType">
+                                <option value="tactical_gear" v-if="!hiddenMode">Tactical Gear</option>
+                                <option value="entity_signature" v-if="hiddenMode">Entity Signature</option>
+                                <option value="sacred_geometry">{{ hiddenMode ? 'Sacred Geometry' : 'Tactical Pattern' }}</option>
+                                <option value="character_sprite">{{ hiddenMode ? 'Hunter Sprite' : 'Operator Sprite' }}</option>
+                                <option value="particle_effect">{{ hiddenMode ? 'Energy Effect' : 'Smoke Effect' }}</option>
+                                <option value="environment_tile">{{ hiddenMode ? 'Hunting Ground' : 'Training Arena' }}</option>
+                            </select>
+                            <input v-model="assetPrompt" placeholder="Describe your asset...">
+                            <button @click="generateAsset" :disabled="generating">
+                                {{ generating ? 'Generating...' : '🎨 Generate' }}
+                            </button>
+                        </div>
+                        <div class="generation-preview" v-if="generatedAsset">
+                            <img :src="generatedAsset.url" :alt="generatedAsset.name">
+                            <button @click="addToProject(generatedAsset)">Add to Project</button>
+                        </div>
+                    </div>
+                    
+                    <div class="asset-library">
+                        <h3>Project Assets</h3>
+                        <div class="asset-grid">
+                            <div v-for="asset in projectAssets" :key="asset.id" class="asset-item">
+                                <img :src="asset.thumbnail" :alt="asset.name">
+                                <span>{{ asset.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mechanics Tab -->
+                <div v-if="activeTab === 'mechanics'" class="mechanics-container">
+                    <div class="mechanics-library">
+                        <h2>Consciousness Mechanics Library</h2>
+                        <div class="mechanics-categories">
+                            <div v-for="category in mechanicsCategories" :key="category.name" 
+                                 class="category-section">
+                                <h3>{{ category.name }}</h3>
+                                <div class="mechanics-grid">
+                                    <div v-for="mechanic in category.mechanics" :key="mechanic.id"
+                                         class="mechanic-card"
+                                         @click="selectMechanic(mechanic)">
+                                        <span class="mechanic-icon">{{ mechanic.icon }}</span>
+                                        <h4>{{ mechanic.name }}</h4>
+                                        <p>{{ mechanic.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div v-if="selectedMechanic" class="mechanic-details">
+                        <h3>{{ selectedMechanic.name }}</h3>
+                        <pre><code>{{ selectedMechanic.code }}</code></pre>
+                        <button @click="addMechanicToProject(selectedMechanic)">
+                            Add to Current Scene
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Multiplayer Tab -->
+                <div v-if="activeTab === 'multiplayer'" class="multiplayer-container">
+                    <div class="network-status">
+                        <h2>Sacred Network</h2>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <span class="label">Network Type:</span>
+                                <span class="value">{{ networkType }}</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Connected Players:</span>
+                                <span class="value">{{ connectedPlayers }}</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Collective Coherence:</span>
+                                <span class="value">{{ collectiveCoherence }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="room-manager">
+                        <h3>Sacred Rooms</h3>
+                        <button @click="createRoom" class="create-room-btn">
+                            Create Sacred Room
+                        </button>
+                        <div class="rooms-list">
+                            <div v-for="room in availableRooms" :key="room.id" class="room-card">
+                                <h4>{{ room.name }}</h4>
+                                <p>Intention: {{ room.intention }}</p>
+                                <p>Players: {{ room.currentPlayers }}/{{ room.maxPlayers }}</p>
+                                <button @click="joinRoom(room)">Join</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Node Creation Menu -->
+            <div v-if="showNodeMenu" class="node-menu-overlay" @click="showNodeMenu = false">
+                <div class="node-menu" @click.stop>
+                    <h3>Add Node</h3>
+                    <div class="node-options">
+                        <button v-for="nodeType in nodeTypes" :key="nodeType.type"
+                                @click="addNode(nodeType)">
+                            {{ nodeType.icon }} {{ nodeType.name }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jaguar Tactical Engine Scripts -->
+    <script src="js/sacred-engine.js"></script>
+    <script src="js/consciousness-physics.js"></script>
+    <script src="js/asset-generator.js"></script>
+    <script src="js/mechanics-library.js"></script>
+    <script src="js/multiplayer-framework.js"></script>
+    <script src="js/entity-database.js"></script>
+    <script src="js/studio-app.js"></script>
+</body>
+</html>
